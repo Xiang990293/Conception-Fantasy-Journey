@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "conception_fantasy_journey",
+	"version": "${version}",
+	"name": "Conception Fantasy Journey",
+	"description": "Includes nearly all of concept around the world, and also able to create your own!",
+	"authors": [
+		"Xiang990293"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/concept_fantasy_journey/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.xiang990293.cfj.ConceptFantasyJourney"
+		],
+		"client": [
+			"net.xiang990293.cfj.ConceptFantasyJourneyClient"
+		]
+	},
+	"mixins": [
+		"concept_fantasy_journey.mixins.json",
+		{
+			"config": "concept_fantasy_journey.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.0",
+		"minecraft": "~1.20.4",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
