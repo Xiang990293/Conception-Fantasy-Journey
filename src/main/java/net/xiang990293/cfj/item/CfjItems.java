@@ -23,7 +23,7 @@ public class CfjItems {
         return Registry.register(Registries.ITEM, new Identifier(ConceptFantasyJourney.MOD_ID, name), item);
     }
     public static void registerCfjItems() {
-        ConceptFantasyJourney.LOGGER.info("Registering Mod Items for" + ConceptFantasyJourney.MOD_ID);
+        ConceptFantasyJourney.LOGGER.info("Registering Mod Items for " + ConceptFantasyJourney.MOD_ID);
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FOOD_AND_DRINK).register(CfjItems::addItemsToIngredientTabItemGroup);
     }

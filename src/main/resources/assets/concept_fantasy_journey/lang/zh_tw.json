@@ -1,3 +1,9 @@
 {
-  "item.concept_fantasy_journey.valentine_chocolate": "情人節巧克力"
+  "item.concept_fantasy_journey.valentine_chocolate": "情人節巧克力",
+
+  "itemgroup.food_and_drinks": "概念幻想冒險：食物及飲品",
+  "itemgroup.blocks_and_tools": "概念幻想冒險：方塊及工具",
+
+  "block.concept_fantasy_journey.imagination_log": "想像木原木",
+  "block.concept_fantasy_journey.concept_simulator": "概念模擬器"
 }

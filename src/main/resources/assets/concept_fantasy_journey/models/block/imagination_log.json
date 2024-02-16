@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "concept_fantasy_journey:block/imagination_log"
+  }
+}
