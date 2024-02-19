@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "" : {
+      "model": "concept_fantasy_journey:block/concept_simulator"
+    }
+  }
+}

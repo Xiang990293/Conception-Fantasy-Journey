@@ -32,6 +32,11 @@ public class CfjItemGroup {
                     .entries((displayContext, entries) -> {
                         entries.add(CfjBlocks.ConceptSimulatorBlock);
                         entries.add(CfjBlocks.ImaginationLogBlock);
+                        entries.add(CfjItems.UnbreakableSword);
+                        entries.add(CfjItems.UnbreakableShovel);
+                        entries.add(CfjItems.UnbreakableHoe);
+                        entries.add(CfjItems.UnbreakablePickaxe);
+                        entries.add(CfjItems.UnbreakableAxe);
                     })
                     .build());
     public static void registerItemGroups() {

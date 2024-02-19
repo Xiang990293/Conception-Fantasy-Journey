@@ -1,0 +1,10 @@
+execute as @e[type=item,nbt={Invulnerable:0b,Item:{id:"concept_fantasy_journey:unbreakable_sword"}}] run data merge entity @s {Invulnerable:1b}
+execute as @e[type=item,nbt={Invulnerable:0b,Item:{id:"concept_fantasy_journey:unbreakable_shovel"}}] run data merge entity @s {Invulnerable:1b}
+execute as @e[type=item,nbt={Invulnerable:0b,Item:{id:"concept_fantasy_journey:unbreakable_hoe"}}] run data merge entity @s {Invulnerable:1b}
+execute as @e[type=item,nbt={Invulnerable:0b,Item:{id:"concept_fantasy_journey:unbreakable_pickaxe"}}] run data merge entity @s {Invulnerable:1b}
+execute as @e[type=item,nbt={Invulnerable:0b,Item:{id:"concept_fantasy_journey:unbreakable_axe"}}] run data merge entity @s {Invulnerable:1b}
+execute as @e[type=item,nbt={Item:{id:"concept_fantasy_journey:unbreakable_sword"}}] run data merge entity @s {Health:1024s}
+execute as @e[type=item,nbt={Item:{id:"concept_fantasy_journey:unbreakable_shovel"}}] run data merge entity @s {Health:1024s}
+execute as @e[type=item,nbt={Item:{id:"concept_fantasy_journey:unbreakable_hoe"}}] run data merge entity @s {Health:1024s}
+execute as @e[type=item,nbt={Item:{id:"concept_fantasy_journey:unbreakable_pickaxe"}}] run data merge entity @s {Health:1024s}
+execute as @e[type=item,nbt={Item:{id:"concept_fantasy_journey:unbreakable_axe"}}] run data merge entity @s {Health:1024s}

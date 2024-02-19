@@ -15,7 +15,7 @@ import net.minecraft.util.Identifier;
 import net.xiang990293.cfj.ConceptFantasyJourney;
 
 public class CfjBlocks{
-    public static final Block ConceptSimulatorBlock = registerBlock("concept_simulator", new Block(FabricBlockSettings
+    public static final Block ConceptSimulatorBlock = registerBlock("concept_simulator", new ConceptSimulatorBlock(FabricBlockSettings
             .copyOf(Blocks.IRON_BLOCK)
             .instrument(Instrument.IRON_XYLOPHONE)
             .requiresTool()

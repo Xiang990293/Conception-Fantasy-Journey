@@ -23,11 +23,7 @@
 		]
 	},
 	"mixins": [
-		"concept_fantasy_journey.mixins.json",
-		{
-			"config": "concept_fantasy_journey.client.mixins.json",
-			"environment": "client"
-		}
+
 	],
 	"depends": {
 		"fabricloader": ">=0.15.0",
