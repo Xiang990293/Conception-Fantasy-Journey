@@ -1,6 +1,12 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "concept_fantasy_journey:block/concept_simulator"
+    "down": "concept_fantasy_journey:block/concept_simulator_bottom",
+    "east": "concept_fantasy_journey:block/concept_simulator_1",
+    "north": "concept_fantasy_journey:block/concept_simulator_2",
+    "particle": "concept_fantasy_journey:block/concept_simulator_1",
+    "south": "concept_fantasy_journey:block/concept_simulator_3",
+    "up": "concept_fantasy_journey:block/concept_simulator_top",
+    "west": "concept_fantasy_journey:block/concept_simulator_0"
   }
 }

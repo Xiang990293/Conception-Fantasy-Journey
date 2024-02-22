@@ -3,244 +3,211 @@
  */
 package net.xiang990293.cfj.block.entity;
 
-import com.google.common.annotations.VisibleForTesting;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-import java.util.List;
-import net.minecraft.block.Block;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.CrafterBlock;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.LootableContainerBlockEntity;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.recipe.RecipeMatcher;
-import net.minecraft.screen.CrafterScreenHandler;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.SmithingScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.xiang990293.cfj.block.CfjBlocks;
+import net.xiang990293.cfj.item.CfjItems;
+import net.xiang990293.cfj.screen.ConceptSimulatorScreenHandler;
+import org.jetbrains.annotations.Nullable;
 
 public class ConceptSimulatorBlockEntity
-        extends LootableContainerBlockEntity{
-    public static final int SLOT_DISABLED = 1;
-    public static final int SLOT_ENABLED = 0;
-    public static final int TRIGGERED_PROPERTY = 9;
-    public static final int PROPERTIES_COUNT = 10;
-    private DefaultedList<ItemStack> inputStacks = DefaultedList.ofSize(9, ItemStack.EMPTY);
-    private int craftingTicksRemaining = 0;
-    protected final PropertyDelegate propertyDelegate = new PropertyDelegate(){
-        private final int[] disabledSlots = new int[9];
-        private int triggered = 0;
-
-        @Override
-        public int get(int index) {
-            return index == 9 ? this.triggered : this.disabledSlots[index];
-        }
-
-        @Override
-        public void set(int index, int value) {
-            if (index == 9) {
-                this.triggered = value;
-            } else {
-                this.disabledSlots[index] = value;
-            }
-        }
-
-        @Override
-        public int size() {
-            return 10;
-        }
-    };
-
+        extends BlockEntity
+        implements ExtendedScreenHandlerFactory, ImplementedInventory {
     public ConceptSimulatorBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityType.CRAFTER, pos, state);
+        super(CfjBlockEntities.CONCEPT_SIMULATOR_BLOCK_ENTITY, pos, state);
+        this.propertyDelegate = new PropertyDelegate() {
+            @Override
+            public int get(int index) {
+                return switch (index) {
+                    case 0 -> ConceptSimulatorBlockEntity.this.energy;
+                    case 1 -> ConceptSimulatorBlockEntity.this.maxEnergy;
+                    case 2 -> ConceptSimulatorBlockEntity.this.sleepEnergy;
+                    case 3 -> ConceptSimulatorBlockEntity.this.maxSleepEnergy;
+                    case 4 -> ConceptSimulatorBlockEntity.this.fictitiousMass;
+                    case 5 -> ConceptSimulatorBlockEntity.this.maxFictitiousMass;
+                    case 6 -> ConceptSimulatorBlockEntity.this.progress;
+                    case 7 -> ConceptSimulatorBlockEntity.this.maxProgress;
+                    default -> 0;
+                };
+            }
+
+            @Override
+            public void set(int index, int value) {
+                switch (index) {
+                    case 0 -> ConceptSimulatorBlockEntity.this.energy = value;
+                    case 1 -> ConceptSimulatorBlockEntity.this.maxEnergy = value;
+                    case 2 -> ConceptSimulatorBlockEntity.this.sleepEnergy = value;
+                    case 3 -> ConceptSimulatorBlockEntity.this.maxSleepEnergy = value;
+                    case 4 -> ConceptSimulatorBlockEntity.this.fictitiousMass = value;
+                    case 5 -> ConceptSimulatorBlockEntity.this.maxFictitiousMass = value;
+                    case 6 -> ConceptSimulatorBlockEntity.this.progress = value;
+                    case 7 -> ConceptSimulatorBlockEntity.this.maxProgress = value;
+                }
+            }
+
+            @Override
+            public int size() {
+                return 8;
+            }
+        };
+    }
+    private int number = 0;
+
+    public static void serverTick(World world, BlockPos pos, BlockState state, ConceptSimulatorBlockEntity blockEntity) {
+
     }
 
     @Override
-    protected Text getContainerName() {
-        return Text.translatable("container.crafter");
+    public DefaultedList<ItemStack> getItems() {
+        return null;
+    }
+    private static final int CHIPS_SLOT = 0;
+    private static final int CRYSTAL_SLOT = 1;
+    private static final int LIGHT_BULB_SLOT = 2;
+    protected final PropertyDelegate propertyDelegate;
+    private int energy = 0;
+    private int maxEnergy = 2000;
+    private int sleepEnergy = 0;
+    private int maxSleepEnergy = 100;
+    private int fictitiousMass = 0;
+    private int maxFictitiousMass = 500;
+    private int progress = 0;
+    private int maxProgress = 2000;
+    private static boolean isCalculating = false;
+    private static boolean isSimulating = false;
+    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
+
+    @Override
+    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
+        buf.writeBlockPos(this.pos);
     }
 
     @Override
-    protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
-        return new SmithingScreenHandler(syncId, playerInventory);
+    public Text getDisplayName() {
+        return Text.translatable("blockentity.gui.displayname");
     }
 
-    public void setSlotEnabled(int slot, boolean enabled) {
-        if (!this.canToggleSlot(slot)) {
-            return;
-        }
-        this.propertyDelegate.set(slot, enabled ? 0 : 1);
-        this.markDirty();
-    }
 
-    public boolean isSlotDisabled(int slot) {
-        if (slot >= 0 && slot < 9) {
-            return this.propertyDelegate.get(slot) == 1;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean isValid(int slot, ItemStack stack) {
-        if (this.propertyDelegate.get(slot) == 1) {
-            return false;
-        }
-        ItemStack itemStack = this.inputStacks.get(slot);
-        int i = itemStack.getCount();
-        if (i >= itemStack.getMaxCount()) {
-            return false;
-        }
-        if (itemStack.isEmpty()) {
-            return true;
-        }
-        return !this.betterSlotExists(i, itemStack, slot);
-    }
-
-    private boolean betterSlotExists(int count, ItemStack stack, int slot) {
-        for (int i = slot + 1; i < 9; ++i) {
-            ItemStack itemStack;
-            if (this.isSlotDisabled(i) || !(itemStack = this.getStack(i)).isEmpty() && (itemStack.getCount() >= count || !ItemStack.canCombine(itemStack, stack))) continue;
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        this.craftingTicksRemaining = nbt.getInt("crafting_ticks_remaining");
-        this.inputStacks = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
-        if (!this.readLootTable(nbt)) {
-            Inventories.readNbt(nbt, this.inputStacks);
-        }
-        int[] is = nbt.getIntArray("disabled_slots");
-        for (int i = 0; i < 9; ++i) {
-            this.propertyDelegate.set(i, 0);
-        }
-        for (int j : is) {
-            if (!this.canToggleSlot(j)) continue;
-            this.propertyDelegate.set(j, 1);
-        }
-        this.propertyDelegate.set(9, nbt.getInt("triggered"));
+        Inventories.readNbt(nbt, inventory);
+        progress = nbt.getInt("concept_simulator.energy");
+        sleepEnergy = nbt.getInt("concept_simulator.sleep_energy");
+        fictitiousMass = nbt.getInt("concept_simulator.fictitious_mass");
+        progress = nbt.getInt("concept_simulator.progress");
+        isSimulating = nbt.getBoolean("concept_simulator.simulating");
+        isCalculating = nbt.getBoolean("concept_simulator.calculating");
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
+    public void writeNbt(NbtCompound nbt) {
+        Inventories.writeNbt(nbt, inventory);
+        nbt.putInt("concept_simulator.energy", progress);
+        nbt.putInt("concept_simulator.sleep_energy", sleepEnergy);
+        nbt.putInt("concept_simulator.fictitious_mass", fictitiousMass);
+        nbt.putInt("concept_simulator.progress", progress);
+        nbt.putBoolean("concept_simulator.simulating", isSimulating);
+        nbt.putBoolean("concept_simulator.calculating", isCalculating);
         super.writeNbt(nbt);
-        nbt.putInt("crafting_ticks_remaining", this.craftingTicksRemaining);
-        if (!this.writeLootTable(nbt)) {
-            Inventories.writeNbt(nbt, this.inputStacks);
-        }
-        this.putDisabledSlots(nbt);
-        this.putTriggered(nbt);
     }
 
-    @Override
-    public int size() {
-        return 9;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        for (ItemStack itemStack : this.inputStacks) {
-            if (itemStack.isEmpty()) continue;
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public ItemStack getStack(int slot) {
-        return this.inputStacks.get(slot);
-    }
-
-    @Override
-    public void setStack(int slot, ItemStack stack) {
-        if (this.isSlotDisabled(slot)) {
-            this.setSlotEnabled(slot, true);
-        }
-        super.setStack(slot, stack);
-    }
-
-    @Override
-    public boolean canPlayerUse(PlayerEntity player) {
-        if (this.world == null || this.world.getBlockEntity(this.pos) != this) {
-            return false;
-        }
-        return !(player.squaredDistanceTo((double)this.pos.getX() + 0.5, (double)this.pos.getY() + 0.5, (double)this.pos.getZ() + 0.5) > 64.0);
-    }
-
-    @Override
-    public DefaultedList<ItemStack> method_11282() {
-        return this.inputStacks;
-    }
-
-    @Override
-    protected void setInvStackList(DefaultedList<ItemStack> list) {
-        this.inputStacks = list;
-    }
-
-    private void putDisabledSlots(NbtCompound nbt) {
-        IntArrayList intList = new IntArrayList();
-        for (int i = 0; i < 9; ++i) {
-            if (!this.isSlotDisabled(i)) continue;
-            intList.add(i);
-        }
-        nbt.putIntArray("disabled_slots", intList);
-    }
-
-    private void putTriggered(NbtCompound nbt) {
-        nbt.putInt("triggered", this.propertyDelegate.get(9));
-    }
-
-    public void setTriggered(boolean triggered) {
-        this.propertyDelegate.set(9, triggered ? 1 : 0);
-    }
-
-    @VisibleForTesting
-    public boolean isTriggered() {
-        return this.propertyDelegate.get(9) == 1;
-    }
-
-    public static void tickCrafting(World world, BlockPos pos, BlockState state, ConceptSimulatorBlockEntity blockEntity) {
-        int i = blockEntity.craftingTicksRemaining - 1;
-        if (i < 0) {
+    public void tick(World world, BlockPos pos, BlockState state) {
+        //logic executing every tick in game
+        if(world.isClient()){
             return;
         }
-        blockEntity.craftingTicksRemaining = i;
-        if (i == 0) {
-            world.setBlockState(pos, (BlockState)state.with(CrafterBlock.CRAFTING, false), Block.NOTIFY_ALL);
+
+        if(!isSimulating()) {
+            if(this.hasRecipe()) {
+                this.calculationButtonAvalible();
+                if(this.isCalculating()) {
+                    markDirty(world, pos, state);
+                }
+
+                if(hasCalculationFinished()) {
+                    this.startSimulationButtonAvalible();
+                    this.resetProgress();
+                }
+            } else {
+                this.resetProgress();
+//                this.failedSimulation();
+                markDirty(world, pos, state);
+            }
         }
+
+
     }
 
-    public void setCraftingTicksRemaining(int craftingTicksRemaining) {
-        this.craftingTicksRemaining = craftingTicksRemaining;
+    private boolean isCalculating() {
+        return this.isCalculating;
     }
 
-    public int getComparatorOutput() {
-        int i = 0;
-        for (int j = 0; j < this.size(); ++j) {
-            ItemStack itemStack = this.getStack(j);
-            if (itemStack.isEmpty() && !this.isSlotDisabled(j)) continue;
-            ++i;
-        }
-        return i;
+    private boolean hasRecipe() {
+//        ItemStack crystal = new ItemStack(CfjItems.ValentineChocolate);
+//        ItemStack chips = new ItemStack(CfjItems.UnbreakableSword);
+//        ItemStack light = new ItemStack(CfjBlocks.ConceptSimulatorBlock);
+        boolean hasInput = (getStack(CHIPS_SLOT).getItem() == CfjItems.UnbreakableSword) && (getStack(LIGHT_BULB_SLOT).getItem() == CfjBlocks.ConceptSimulatorBlock.asItem()) && (getStack(CRYSTAL_SLOT).getItem() == CfjItems.ValentineChocolate);
+        return hasInput;
     }
 
-    private boolean canToggleSlot(int slot) {
-        return slot > -1 && slot < 9 && this.inputStacks.get(slot).isEmpty();
+
+
+    private void resetProgress() {
+        this.progress = 0;
     }
 
-    public /* synthetic */ List getHeldStacks() {
-        return this.method_11282();
+    private boolean hasCalculationFinished(){
+        return (this.progress >= maxProgress);
+    }
+
+    private boolean isSimulating(){
+        return (this.progress != 0);
+    }
+
+    private void calculationButtonAvalible(){
+    }
+
+    private void startSimulationButtonAvalible() {
+    }
+
+    private boolean CalculationButtonClicked() {
+        return this.isCalculating;
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
+    }
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt() {
+        return createNbt();
+    }
+
+    @Nullable
+    @Override
+    public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+        return new ConceptSimulatorScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
     }
 }
 
