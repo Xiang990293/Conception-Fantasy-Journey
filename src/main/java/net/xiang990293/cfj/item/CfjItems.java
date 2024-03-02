@@ -11,6 +11,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.xiang990293.cfj.ConceptFantasyJourney;
 import net.xiang990293.cfj.item.tool.CfjUnbreakableToolMaterial;
+import net.xiang990293.cfj.item.tool.PureLoveTools;
 import net.xiang990293.cfj.item.tool.UnbreakableTools;
 
 import java.util.function.Consumer;
@@ -24,6 +25,7 @@ public class CfjItems {
     public static final Item UnbreakableAxe = registerItem("unbreakable_axe", UnbreakableTools.UnbreakableAxe);
     public static final Item UnbreakablePickaxe = registerItem("unbreakable_pickaxe", UnbreakableTools.UnbreakablePickaxe);
     public static final Item UnbreakableHoe = registerItem("unbreakable_hoe", UnbreakableTools.UnbreakableHoe);
+    public static final Item PureLoveSword = registerItem("pure_love_sword", PureLoveTools.PureLoveSword);
 
 
 

@@ -1,0 +1,6 @@
+{
+  "exhaustion": 10.0,
+  "scaling": "never",
+  "effects": "poking",
+  "message_id": "player_attack"
+}

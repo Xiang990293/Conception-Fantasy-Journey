@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "concept_fantasy_journey:item/pure_love_sword"
+  }
+}

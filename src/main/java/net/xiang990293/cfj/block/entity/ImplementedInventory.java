@@ -3,10 +3,16 @@ package net.xiang990293.cfj.block.entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.Nullable;
 
-public interface ImplementedInventory extends Inventory {
+import static net.minecraft.util.JsonHelper.getItem;
+
+@FunctionalInterface
+public interface ImplementedInventory extends SidedInventory {
 
     /**
      * Retrieves the item list of this inventory.
@@ -121,6 +127,26 @@ public interface ImplementedInventory extends Inventory {
      */
     @Override
     default boolean canPlayerUse(PlayerEntity player) {
+        return true;
+    }
+
+    @Override
+    default int[] getAvailableSlots(Direction side) {
+        int[] result = new int[getItems().size()];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = i;
+        }
+
+        return result;
+    }
+
+    @Override
+    default boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
+        return true;
+    }
+
+    @Override
+    default boolean canExtract(int slot, ItemStack stack, Direction side) {
         return true;
     }
 }

@@ -76,7 +76,7 @@ public class ConceptSimulatorBlockEntity
 
     @Override
     public DefaultedList<ItemStack> getItems() {
-        return null;
+        return inventory;
     }
     private static final int CHIPS_SLOT = 0;
     private static final int CRYSTAL_SLOT = 1;
@@ -90,8 +90,9 @@ public class ConceptSimulatorBlockEntity
     private int maxFictitiousMass = 500;
     private int progress = 0;
     private int maxProgress = 2000;
-    private static boolean isCalculating = false;
-    private static boolean isSimulating = false;
+    public static boolean isCalculating = false;
+    public static boolean isSimulating = false;
+    public static boolean isCalculated = false;
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
 
     @Override
@@ -101,7 +102,7 @@ public class ConceptSimulatorBlockEntity
 
     @Override
     public Text getDisplayName() {
-        return Text.translatable("blockentity.gui.displayname");
+        return Text.translatable("blockentity.gui.concept_simulator");
     }
 
 
@@ -138,13 +139,13 @@ public class ConceptSimulatorBlockEntity
 
         if(!isSimulating()) {
             if(this.hasRecipe()) {
-                this.calculationButtonAvalible();
+                this.calculationButtonAvailable();
                 if(this.isCalculating()) {
                     markDirty(world, pos, state);
                 }
 
                 if(hasCalculationFinished()) {
-                    this.startSimulationButtonAvalible();
+                    this.startSimulationButtonAvailable();
                     this.resetProgress();
                 }
             } else {
@@ -157,7 +158,7 @@ public class ConceptSimulatorBlockEntity
 
     }
 
-    private boolean isCalculating() {
+    public boolean isCalculating() {
         return this.isCalculating;
     }
 
@@ -183,14 +184,15 @@ public class ConceptSimulatorBlockEntity
         return (this.progress != 0);
     }
 
-    private void calculationButtonAvalible(){
+    private void calculationButtonAvailable(){
     }
 
-    private void startSimulationButtonAvalible() {
+    private void startSimulationButtonAvailable() {
+//        return isCalculated;
     }
 
     private boolean CalculationButtonClicked() {
-        return this.isCalculating;
+        return false;
     }
 
     @Nullable

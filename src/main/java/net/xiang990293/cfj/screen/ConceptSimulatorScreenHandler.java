@@ -15,11 +15,11 @@ import net.xiang990293.cfj.block.entity.ConceptSimulatorBlockEntity;
 public class ConceptSimulatorScreenHandler extends ScreenHandler {
 
     private final Inventory inventory;
-    private final PropertyDelegate propertyDelegate;
+    public final PropertyDelegate propertyDelegate;
     public final ConceptSimulatorBlockEntity blockEntity;
 
     public ConceptSimulatorScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
-        this(syncId, inventory, inventory.player.getWorld().getBlockEntity(buf.readBlockPos()), new ArrayPropertyDelegate(3));
+        this(syncId, inventory, inventory.player.getWorld().getBlockEntity(buf.readBlockPos()), new ArrayPropertyDelegate(8));
     }
     public ConceptSimulatorScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate arrayPropertyDelegate) {
         super(CfjScreenHandlers.CONCEPT_SIMULATOR_SCREEN_HANDLER, syncId);
@@ -28,14 +28,17 @@ public class ConceptSimulatorScreenHandler extends ScreenHandler {
         this.propertyDelegate = arrayPropertyDelegate;
         this.blockEntity = ((ConceptSimulatorBlockEntity) blockEntity);
 
-        this.addSlot(new Slot(inventory,0,88,11));
-        this.addSlot(new Slot(inventory,1,88,59));
-        this.addSlot(new Slot(inventory,2,150,59));
+        this.addSlot(new Slot(inventory,0,79,17));
+        this.addSlot(new Slot(inventory,1,79,62));
+        this.addSlot(new Slot(inventory,2,152,62));
 
-        addPlayerInventtory(playerInventory);
+        addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
 
         addProperties(arrayPropertyDelegate);
+    }
+    public int getProperties() {
+        return this.propertyDelegate.get(0);
     }
 
 
@@ -77,13 +80,21 @@ public class ConceptSimulatorScreenHandler extends ScreenHandler {
     public int getScaledProgress() {
         int progress = this.propertyDelegate.get(6);
         int maxProgress = this.propertyDelegate.get(7);
-        int progressBarSize = 162; // Progress Bar width in pixels.
+        int progressBarSize = 51; // Progress Bar width in pixels.
 
-        return maxProgress != 0 && progress != 0 ? progress * progressBarSize / maxProgress : 0;
+        return maxProgress != 0 && progress != 0 ? progressBarSize - progress * progressBarSize / maxProgress : progressBarSize;
     }
+    private void addPlayerInventory(PlayerInventory playerInventory) {
+        for (int i = 0; i < 3; ++i) {
+            for (int l = 0; l < 9; ++l) {
+                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 84 + i * 18));
+            }
+        }
+    }
+
     private void addPlayerHotbar(PlayerInventory playerInventory) {
-    }
-
-    private void addPlayerInventtory(PlayerInventory playerInventory) {
+        for (int i = 0; i < 9; ++i) {
+            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
+        }
     }
 }

@@ -18,16 +18,8 @@ repositories {
 	// for more information about repositories.
 }
 
-loom {
-    splitEnvironmentSourceSets()
-
-	mods {
-		"concept_fantasy_journey" {
-			sourceSet sourceSets.main
-			sourceSet sourceSets.client
-		}
-	}
-
+fabricApi {
+	configureDataGeneration()
 }
 
 dependencies {

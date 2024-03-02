@@ -9,6 +9,7 @@ import net.minecraft.block.entity.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
@@ -51,10 +52,14 @@ public class ConceptSimulatorBlock
         if (world.isClient) {
             return ActionResult.SUCCESS;
         }
+        NamedScreenHandlerFactory screenHandlerFactory = ((ConceptSimulatorBlockEntity) world.getBlockEntity(pos));
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof ConceptSimulatorBlockEntity) {
-            player.openHandledScreen(createScreenHandlerFactory());
+        if (screenHandlerFactory != null) {
+            player.openHandledScreen(screenHandlerFactory);
         }
+//        if (blockEntity instanceof ConceptSimulatorBlockEntity) {
+//            player.openHandledScreen(screenHandlerFactory);
+//        }
         return ActionResult.CONSUME;
     }
 

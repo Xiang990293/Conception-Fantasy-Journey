@@ -5,10 +5,13 @@
   "item.concept_fantasy_journey.unbreakable_axe": "不朽神斧",
   "item.concept_fantasy_journey.unbreakable_pickaxe": "不朽神鎬",
   "item.concept_fantasy_journey.unbreakable_hoe": "不朽神鋤",
+  "item.concept_fantasy_journey.pure_love_sword": "純愛之劍",
 
-  "itemgroup.food_and_drinks": "概念幻想冒險：食物及飲品",
-  "itemgroup.blocks_and_tools": "概念幻想冒險：方塊及工具",
+  "itemgroup.food_and_drinks.title": "概念幻想冒險：食物及飲品",
+  "itemgroup.blocks_and_tools.title": "概念幻想冒險：方塊及工具",
 
   "block.concept_fantasy_journey.imagination_log": "想像木原木",
-  "block.concept_fantasy_journey.concept_simulator": "概念模擬器"
+  "block.concept_fantasy_journey.concept_simulator": "概念模擬器",
+
+  "blockentity.gui.concept_simulator": "概念模擬器"
 }

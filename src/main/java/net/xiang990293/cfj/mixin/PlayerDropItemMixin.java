@@ -14,12 +14,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ItemEntity.class)
 public class PlayerDropItemMixin {
 
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;tick()V"), method = "dropItem", cancellable = true)
-	private void onShear(final PlayerEntity player, final Hand hand, final CallbackInfoReturnable<Boolean> info) {
-		ActionResult result = ItemDropCallback.EVENT.invoker().drop(player, (ItemEntity) (Object) this);
-
-		if(result == ActionResult.FAIL) {
-			info.cancel();
-		}
-	}
+//	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;tick()V"), method = "dropItem", cancellable = true)
+//	private void onShear(final PlayerEntity player, final Hand hand, final CallbackInfoReturnable<Boolean> info) {
+//		ActionResult result = ItemDropCallback.EVENT.invoker().drop(player, (ItemEntity) (Object) this);
+//
+//		if(result == ActionResult.FAIL) {
+//			info.cancel();
+//		}
+//	}
 }
