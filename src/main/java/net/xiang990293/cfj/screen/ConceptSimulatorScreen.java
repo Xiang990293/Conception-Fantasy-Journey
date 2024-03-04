@@ -23,9 +23,9 @@ import java.util.Optional;
 
 public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreenHandler> {
 
-    static final Identifier BUTTON_DISABLED_TEXTURE = new Identifier("container/beacon/button_disabled");
-    static final Identifier BUTTON_SELECTED_TEXTURE = new Identifier("container/beacon/button_selected");
-    static final Identifier BUTTON_HIGHLIGHTED_TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_button_highlighted.png");
+    private static final Identifier BUTTON_DISABLED_TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_button_disabled.png");
+    private static final Identifier BUTTON_SELECTED_TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_button_disabled.png");
+    private static final Identifier BUTTON_HIGHLIGHTED_TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_button_highlighted.png");
     private static final Identifier BUTTON_TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_button.png");
     private static final Identifier START_SIMULATING_TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_start_simulating_icon.png");
     private static final Identifier STOP_SIMULATING_TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_stop_simulating_icon.png");
@@ -42,13 +42,21 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
         this.buttons.add(button);
     }
 
+
+
+    public ButtonWidget button1;
+    public ButtonWidget button2;
+    public ConceptSimulatorScreen.StartCalculatingButtonWidget startCalculatingButton;
+    public ConceptSimulatorScreen.SwitchSimulatingButtonWidget switchSimulatingButton;
     @Override
     protected void init() {
         super.init();
         this.buttons.clear();
-        this.addButton(new ConceptSimulatorScreen.StartCalculatingButtonWidget(this.x + 116, this.y + 62));
-        this.addButton(new ConceptSimulatorScreen.StartSimulatingButtonWidget(this.x + 190, this.y + 107));
-        this.addButton(new ConceptSimulatorScreen.StopSimulatingButtonWidget(this.x + 210, this.y + 107));
+        startCalculatingButton = new ConceptSimulatorScreen.StartCalculatingButtonWidget(this.x + 116, this.y + 62);
+        switchSimulatingButton = new ConceptSimulatorScreen.SwitchSimulatingButtonWidget(this.x + 116, this.y + 30);
+        this.addButton(startCalculatingButton);
+        this.addButton(switchSimulatingButton);
+//        this.addButton(new ConceptSimulatorScreen.StopSimulatingButtonWidget(this.x + 100, this.y + 30));
 
 //        //製作一般的按鈕，像是在設定頁面中看到的那種長條形按鈕。
 //        button1 = ButtonWidget.builder(Text.literal("Button 1"), button -> {
@@ -67,9 +75,6 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
 //        addDrawableChild(button1);
 //        addDrawableChild(button2);
     }
-
-    public ButtonWidget button1;
-    public ButtonWidget button2;
 
     @Environment(EnvType.CLIENT)
     interface ConceptSimulatorButtonWidget {
@@ -107,18 +112,14 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
             if (!this.active) {
                 identifier = ConceptSimulatorScreen.BUTTON_DISABLED_TEXTURE;
             } else if (this.disabled) {
-                identifier = ConceptSimulatorScreen.BUTTON_SELECTED_TEXTURE;
-            } else if (this.isSelected()) {
+                identifier = ConceptSimulatorScreen.BUTTON_DISABLED_TEXTURE;
+            } else if (this.isHovered()) {
                 identifier = ConceptSimulatorScreen.BUTTON_HIGHLIGHTED_TEXTURE;
             } else {
                 identifier = ConceptSimulatorScreen.BUTTON_TEXTURE;
             }
 
-//            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-//            RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-//            RenderSystem.setShaderTexture(0, identifier);
-
-            context.drawTexture(identifier, this.getX(), this.getY(),1 ,0 ,0, this.width, this.height, 256, 256);
+            context.drawTexture(identifier, this.getX(), this.getY(),1 ,0 ,0, 16, 16, this.width, this.height);
             this.renderExtra(context);
         }
 
@@ -134,6 +135,27 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
     }
 
     @Environment(EnvType.CLIENT)
+    abstract static class BaseSwitchWidget extends BaseButtonWidget {
+        public static boolean isOn = false;
+        protected BaseSwitchWidget(int x, int y) {
+            super(x, y);
+        }
+
+        protected BaseSwitchWidget(int x, int y, Text message) {
+            super(x, y, message);
+        }
+
+        public void switchState(){
+            isOn = !isOn;
+        }
+
+        public boolean getState(){
+            return isOn;
+        }
+
+    }
+
+    @Environment(EnvType.CLIENT)
     abstract static class IconButtonWidget extends ConceptSimulatorScreen.BaseButtonWidget {
         private final Identifier texture;
 
@@ -143,14 +165,36 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
         }
 
         protected void renderExtra(DrawContext context) {
-//            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-//            RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-//            RenderSystem.setShaderTexture(0, this.texture);
-            context.drawTexture(this.texture, this.getX(), this.getY(), 0, 0, 16, 16);
+            context.drawTexture(this.texture, this.getX(), this.getY(),1 ,0 ,0, 16, 16, this.width, this.height);
         }
     }
 
-    //介面內的按鈕，一個負責開始計算，一個負責開始模擬，一個負責暫停模擬
+    @Environment(EnvType.CLIENT)
+    abstract static class IconSwitchWidget extends ConceptSimulatorScreen.BaseSwitchWidget {
+        protected final Identifier textureOn;
+        protected final Identifier textureOff;
+        protected Identifier texture;
+
+        protected IconSwitchWidget(int x, int y, Identifier textureOn, Identifier textureOff, Text message) {
+            super(x, y, message);
+            this.textureOn = textureOn;
+            this.textureOff = textureOff;
+            this.texture = textureOff;
+        }
+
+        protected IconSwitchWidget(int x, int y, Identifier texture, Text message) {
+            super(x, y, message);
+            this.textureOn = texture;
+            this.textureOff = texture;
+            this.texture = texture;
+        }
+
+        protected void renderExtra(DrawContext context) {
+            context.drawTexture(this.texture, this.getX(), this.getY(),1 ,0 ,0, 16, 16, this.width, this.height);
+        }
+    }
+
+    //介面內的按鈕，一個負責開始計算，一個負責開始/暫停模擬
     @Environment(EnvType.CLIENT)
     class StartCalculatingButtonWidget extends ConceptSimulatorScreen.IconButtonWidget {
         public StartCalculatingButtonWidget(int x, int y) {
@@ -159,6 +203,7 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
 
         public void onPress() {
             ConceptSimulatorBlockEntity.isCalculating = true;
+//            ConceptSimulatorBlockEntity.
         }
 
         public void tick(int level) {
@@ -166,32 +211,40 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
     }
 
     @Environment(EnvType.CLIENT)
-    class StartSimulatingButtonWidget extends ConceptSimulatorScreen.IconButtonWidget {
-        public StartSimulatingButtonWidget(int x, int y) {
-            super(x, y, ConceptSimulatorScreen.START_SIMULATING_TEXTURE, ScreenTexts.EMPTY);
+    class SwitchSimulatingButtonWidget extends ConceptSimulatorScreen.IconSwitchWidget {
+        public SwitchSimulatingButtonWidget(int x, int y) {
+            super(x, y, ConceptSimulatorScreen.STOP_SIMULATING_TEXTURE, ConceptSimulatorScreen.START_SIMULATING_TEXTURE, ScreenTexts.EMPTY);
+            texture = (ConceptSimulatorBlockEntity.isSimulating? textureOn : textureOff);
+            this.active = ConceptSimulatorBlockEntity.isCalculated;
+            this.setDisabled(ConceptSimulatorBlockEntity.isCalculated);
         }
 
         public void onPress() {
-            ConceptSimulatorBlockEntity.isSimulating = true;
+            switchState();
+            ConceptSimulatorBlockEntity.isSimulating = getState();
+            texture = ((texture == textureOn)? textureOff : textureOn);
         }
 
         public void tick(int level) {
+
         }
     }
 
-    @Environment(EnvType.CLIENT)
-    class StopSimulatingButtonWidget extends ConceptSimulatorScreen.IconButtonWidget {
-        public StopSimulatingButtonWidget(int x, int y) {
-            super(x, y, ConceptSimulatorScreen.STOP_SIMULATING_TEXTURE, ScreenTexts.EMPTY);
-        }
-
-        public void onPress() {
-            ConceptSimulatorBlockEntity.isSimulating = false;
-        }
-
-        public void tick(int level) {
-        }
-    }
+//    @Environment(EnvType.CLIENT)
+//    class StopSimulatingButtonWidget extends ConceptSimulatorScreen.IconButtonWidget {
+//        public StopSimulatingButtonWidget(int x, int y) {
+//            super(x, y, ConceptSimulatorScreen.STOP_SIMULATING_TEXTURE, ScreenTexts.EMPTY);
+//            this.setDisabled(ConceptSimulatorBlockEntity.isCalculating);
+//            this.active = false;
+//        }
+//
+//        public void onPress() {
+//            ConceptSimulatorBlockEntity.isSimulating = false;
+//        }
+//
+//        public void tick(int level) {
+//        }
+//    }
 
     // 背景繪製，
     @Override

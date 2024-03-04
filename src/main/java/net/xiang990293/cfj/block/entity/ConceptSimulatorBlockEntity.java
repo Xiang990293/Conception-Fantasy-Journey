@@ -93,6 +93,8 @@ public class ConceptSimulatorBlockEntity
     public static boolean isCalculating = false;
     public static boolean isSimulating = false;
     public static boolean isCalculated = false;
+    public static boolean isCalculable = false;
+    public static boolean isSimulable = false;
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
 
     @Override
@@ -140,12 +142,12 @@ public class ConceptSimulatorBlockEntity
         if(!isSimulating()) {
             if(this.hasRecipe()) {
                 this.calculationButtonAvailable();
-                if(this.isCalculating()) {
+                if(this.isCalculating) {
                     markDirty(world, pos, state);
                 }
 
                 if(hasCalculationFinished()) {
-                    this.startSimulationButtonAvailable();
+                    this.SimulationButtonAvailable();
                     this.resetProgress();
                 }
             } else {
@@ -156,10 +158,6 @@ public class ConceptSimulatorBlockEntity
         }
 
 
-    }
-
-    public boolean isCalculating() {
-        return this.isCalculating;
     }
 
     private boolean hasRecipe() {
@@ -185,10 +183,11 @@ public class ConceptSimulatorBlockEntity
     }
 
     private void calculationButtonAvailable(){
+        this.isCalculable = true;
     }
 
-    private void startSimulationButtonAvailable() {
-//        return isCalculated;
+    private void SimulationButtonAvailable() {
+        this.isSimulable = true;
     }
 
     private boolean CalculationButtonClicked() {

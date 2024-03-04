@@ -73,7 +73,7 @@ public class ConceptSimulatorScreenHandler extends ScreenHandler {
     }
 
     public boolean isCalculating(){
-        return propertyDelegate.get(6) > 0;
+        return ConceptSimulatorBlockEntity.isCalculating;
 
     }
 
