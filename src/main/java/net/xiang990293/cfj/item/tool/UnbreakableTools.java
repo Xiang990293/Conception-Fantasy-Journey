@@ -21,27 +21,27 @@ import net.minecraft.util.Hand;
 import java.util.function.Consumer;
 
 public class UnbreakableTools {
-    public static final ToolItem UnbreakableSword = new UnbreakableSwordItem(CfjUnbreakableToolMaterial.INSTANCE,10000, 5.0f, new FabricItemSettings()
+    public static final ToolItem UnbreakableSword = new UnbreakableSwordItem(CfjUnbreakableToolMaterial.INSTANCE,2147483647, 5.0f, new FabricItemSettings()
             .fireproof()
             .maxDamage(-1)
     );
 
-    public static final ToolItem UnbreakablePickaxe = new PickaxeItem(CfjUnbreakableToolMaterial.INSTANCE,5000, 5.0f, new FabricItemSettings()
+    public static final ToolItem UnbreakablePickaxe = new PickaxeItem(CfjUnbreakableToolMaterial.INSTANCE,2147483647, 5.0f, new FabricItemSettings()
             .fireproof()
             .maxDamage(-1)
     );
 
-    public static final ToolItem UnbreakableAxe = new AxeItem(CfjUnbreakableToolMaterial.INSTANCE,15000, 5.0f, new FabricItemSettings()
+    public static final ToolItem UnbreakableAxe = new AxeItem(CfjUnbreakableToolMaterial.INSTANCE,2147483647, 5.0f, new FabricItemSettings()
             .fireproof()
             .maxDamage(-1)
     );
 
-    public static final ToolItem UnbreakableShovel = new ShovelItem(CfjUnbreakableToolMaterial.INSTANCE,5000, 5.0f, new FabricItemSettings()
+    public static final ToolItem UnbreakableShovel = new ShovelItem(CfjUnbreakableToolMaterial.INSTANCE,2147483647, 5.0f, new FabricItemSettings()
             .fireproof()
             .maxDamage(-1)
     );
 
-    public static final ToolItem UnbreakableHoe = new HoeItem(CfjUnbreakableToolMaterial.INSTANCE,8000, 5.0f, new FabricItemSettings()
+    public static final ToolItem UnbreakableHoe = new HoeItem(CfjUnbreakableToolMaterial.INSTANCE,2147483647, 5.0f, new FabricItemSettings()
             .fireproof()
             .maxDamage(-1)
     );

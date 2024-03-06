@@ -18,7 +18,7 @@ public class CfjUnbreakableToolMaterial implements ToolMaterial {
 
     @Override
     public float getAttackDamage() {
-        return 10.0f;
+        return 0.0f;
     }
 
     @Override

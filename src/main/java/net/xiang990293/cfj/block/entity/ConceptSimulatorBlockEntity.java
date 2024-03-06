@@ -24,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.xiang990293.cfj.block.CfjBlocks;
 import net.xiang990293.cfj.item.CfjItems;
+import net.xiang990293.cfj.screen.ConceptSimulatorScreen;
 import net.xiang990293.cfj.screen.ConceptSimulatorScreenHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -90,11 +91,16 @@ public class ConceptSimulatorBlockEntity
     private int maxFictitiousMass = 500;
     private int progress = 0;
     private int maxProgress = 2000;
-    public static boolean isCalculating = false;
-    public static boolean isSimulating = false;
-    public static boolean isCalculated = false;
-    public static boolean isCalculable = false;
-    public static boolean isSimulable = false;
+    public boolean isCalculating = false;
+    public boolean isSimulating = false;
+    public boolean isCalculated = false;
+    public boolean isCalculable = false;
+    public boolean isSimulable = false;
+    public boolean hasRecipe = false;
+    public boolean IsChipAvailable = false;
+    public boolean IsCrystalAvailable = false;
+    public boolean IsLightBulbAvailable = false;
+
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
 
     @Override
@@ -134,13 +140,19 @@ public class ConceptSimulatorBlockEntity
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
-        //logic executing every tick in game
-        if(world.isClient()){
-            return;
-        }
+        IsChipAvailable = (getStack(CHIPS_SLOT).getItem() == CfjItems.UnbreakableSword);
+        IsLightBulbAvailable = (getStack(LIGHT_BULB_SLOT).getItem() == CfjBlocks.ConceptSimulatorBlock.asItem());
+        IsCrystalAvailable = (getStack(CRYSTAL_SLOT).getItem() == CfjItems.ValentineChocolate);
 
+
+        //logic executing every tick in game
+//        if(world.isClient()){
+//            return;
+//        }
+
+        hasRecipe = this.hasRecipe();
         if(!isSimulating()) {
-            if(this.hasRecipe()) {
+            if(hasRecipe) {
                 this.calculationButtonAvailable();
                 if(this.isCalculating) {
                     markDirty(world, pos, state);
@@ -160,11 +172,9 @@ public class ConceptSimulatorBlockEntity
 
     }
 
-    private boolean hasRecipe() {
-//        ItemStack crystal = new ItemStack(CfjItems.ValentineChocolate);
-//        ItemStack chips = new ItemStack(CfjItems.UnbreakableSword);
-//        ItemStack light = new ItemStack(CfjBlocks.ConceptSimulatorBlock);
-        boolean hasInput = (getStack(CHIPS_SLOT).getItem() == CfjItems.UnbreakableSword) && (getStack(LIGHT_BULB_SLOT).getItem() == CfjBlocks.ConceptSimulatorBlock.asItem()) && (getStack(CRYSTAL_SLOT).getItem() == CfjItems.ValentineChocolate);
+    public boolean hasRecipe() {
+        boolean hasInput = IsChipAvailable && IsLightBulbAvailable && IsCrystalAvailable;
+
         return hasInput;
     }
 

@@ -54,12 +54,12 @@ public class ConceptSimulatorBlock
         }
         NamedScreenHandlerFactory screenHandlerFactory = ((ConceptSimulatorBlockEntity) world.getBlockEntity(pos));
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (screenHandlerFactory != null) {
-            player.openHandledScreen(screenHandlerFactory);
-        }
-//        if (blockEntity instanceof ConceptSimulatorBlockEntity) {
+//        if (screenHandlerFactory != null) {
 //            player.openHandledScreen(screenHandlerFactory);
 //        }
+        if (blockEntity instanceof ConceptSimulatorBlockEntity) {
+            player.openHandledScreen(screenHandlerFactory);
+        }
         return ActionResult.CONSUME;
     }
 

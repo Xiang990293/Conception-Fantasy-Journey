@@ -28,17 +28,17 @@ public class ConceptSimulatorScreenHandler extends ScreenHandler {
         this.propertyDelegate = arrayPropertyDelegate;
         this.blockEntity = ((ConceptSimulatorBlockEntity) blockEntity);
 
-        this.addSlot(new Slot(inventory,0,79,17));
-        this.addSlot(new Slot(inventory,1,79,62));
-        this.addSlot(new Slot(inventory,2,152,62));
+        this.addSlot(new Slot(inventory,0,152,62));
+        this.addSlot(new Slot(inventory,1,79,17));
+        this.addSlot(new Slot(inventory,2,79,62));
 
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
 
         addProperties(arrayPropertyDelegate);
     }
-    public int getProperties() {
-        return this.propertyDelegate.get(0);
+    public int getProperties(int index) {
+        return this.propertyDelegate.get(index);
     }
 
 
@@ -73,10 +73,8 @@ public class ConceptSimulatorScreenHandler extends ScreenHandler {
     }
 
     public boolean isCalculating(){
-        return ConceptSimulatorBlockEntity.isCalculating;
-
+        return blockEntity.isCalculating;
     }
-
     public int getScaledProgress() {
         int progress = this.propertyDelegate.get(6);
         int maxProgress = this.propertyDelegate.get(7);

@@ -30,6 +30,8 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
     private static final Identifier START_SIMULATING_TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_start_simulating_icon.png");
     private static final Identifier STOP_SIMULATING_TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_stop_simulating_icon.png");
     private static final Identifier START_CALCULATING_TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_start_calculating_icon.png");
+    private static final Identifier SLOT_ITEM_AVAILABLE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_slot_item_available.png");
+
     private static final Identifier TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "textures/gui/concept_simulator.png");
     private final List<ConceptSimulatorScreen.ConceptSimulatorButtonWidget> buttons = Lists.newArrayList();
 
@@ -78,21 +80,24 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
 
     @Environment(EnvType.CLIENT)
     interface ConceptSimulatorButtonWidget {
-        void tick(int level);
+        void tick();
     }
 
     void tickButtons() {
-        int i = this.handler.getProperties();
+//        int i = this.handler.getProperties();
         this.buttons.forEach((button) -> {
-            button.tick(i);
+            button.tick();
+            //Beacon
         });
     }
 
-//    public void tick(int level) {
-//    }
+    public void handledScreenTick() {
+        super.handledScreenTick();
+        this.tickButtons();
+    }
 
     @Environment(EnvType.CLIENT)
-    abstract static class BaseButtonWidget extends PressableWidget implements ConceptSimulatorScreen.ConceptSimulatorButtonWidget {
+    abstract class BaseButtonWidget extends PressableWidget implements ConceptSimulatorScreen.ConceptSimulatorButtonWidget {
         private boolean disabled;
 
         private boolean isDisabled() {
@@ -135,8 +140,8 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
     }
 
     @Environment(EnvType.CLIENT)
-    abstract static class BaseSwitchWidget extends BaseButtonWidget {
-        public static boolean isOn = false;
+    abstract class BaseSwitchWidget extends BaseButtonWidget {
+        public boolean isOn = false;
         protected BaseSwitchWidget(int x, int y) {
             super(x, y);
         }
@@ -156,7 +161,7 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
     }
 
     @Environment(EnvType.CLIENT)
-    abstract static class IconButtonWidget extends ConceptSimulatorScreen.BaseButtonWidget {
+    abstract class IconButtonWidget extends ConceptSimulatorScreen.BaseButtonWidget {
         private final Identifier texture;
 
         protected IconButtonWidget(int x, int y, Identifier texture, Text message) {
@@ -170,7 +175,7 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
     }
 
     @Environment(EnvType.CLIENT)
-    abstract static class IconSwitchWidget extends ConceptSimulatorScreen.BaseSwitchWidget {
+    abstract class IconSwitchWidget extends ConceptSimulatorScreen.BaseSwitchWidget {
         protected final Identifier textureOn;
         protected final Identifier textureOff;
         protected Identifier texture;
@@ -196,17 +201,21 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
 
     //介面內的按鈕，一個負責開始計算，一個負責開始/暫停模擬
     @Environment(EnvType.CLIENT)
-    class StartCalculatingButtonWidget extends ConceptSimulatorScreen.IconButtonWidget {
+    class StartCalculatingButtonWidget extends ConceptSimulatorScreen.IconButtonWidget{
         public StartCalculatingButtonWidget(int x, int y) {
             super(x, y, ConceptSimulatorScreen.START_CALCULATING_TEXTURE, ScreenTexts.EMPTY);
+            this.active = handler.blockEntity.hasRecipe;
+            this.setDisabled(!handler.blockEntity.hasRecipe);
         }
 
         public void onPress() {
-            ConceptSimulatorBlockEntity.isCalculating = true;
-//            ConceptSimulatorBlockEntity.
+//            handler.blockEntity.isCalculating = true;
+//            handler.blockEntity.
         }
 
-        public void tick(int level) {
+        public void tick() {
+            this.active = handler.blockEntity.hasRecipe;
+            this.setDisabled(!handler.blockEntity.hasRecipe);
         }
     }
 
@@ -214,18 +223,18 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
     class SwitchSimulatingButtonWidget extends ConceptSimulatorScreen.IconSwitchWidget {
         public SwitchSimulatingButtonWidget(int x, int y) {
             super(x, y, ConceptSimulatorScreen.STOP_SIMULATING_TEXTURE, ConceptSimulatorScreen.START_SIMULATING_TEXTURE, ScreenTexts.EMPTY);
-            texture = (ConceptSimulatorBlockEntity.isSimulating? textureOn : textureOff);
-            this.active = ConceptSimulatorBlockEntity.isCalculated;
-            this.setDisabled(ConceptSimulatorBlockEntity.isCalculated);
+            texture = (handler.blockEntity.isSimulating? textureOn : textureOff);
+            this.active = handler.blockEntity.isCalculated;
+            this.setDisabled(handler.blockEntity.isCalculated);
         }
 
         public void onPress() {
             switchState();
-            ConceptSimulatorBlockEntity.isSimulating = getState();
+//            ConceptSimulatorBlockEntity.isSimulating = getState();
             texture = ((texture == textureOn)? textureOff : textureOn);
         }
 
-        public void tick(int level) {
+        public void tick() {
 
         }
     }
@@ -257,6 +266,7 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
 
         context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
         renderProgressBar(context, x, y);
+        renderAvailableItemSlot(context, x, y);
     }
 
     private void renderProgressBar(DrawContext context, int x, int y) {
@@ -264,6 +274,12 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
         if (handler.isCalculating()) {
             context.drawTexture(TEXTURE, x + 98, y + 68, 0, 166, handler.getScaledProgress(), 4);
         }
+    }
+
+    private void renderAvailableItemSlot(DrawContext context, int x, int y) {
+        context.drawTexture(SLOT_ITEM_AVAILABLE, x + 77, y + 15,1 , 0, 0, handler.blockEntity.IsCrystalAvailable?20:0, handler.blockEntity.IsCrystalAvailable?20:0, 20, 20);
+        context.drawTexture(SLOT_ITEM_AVAILABLE, x + 77, y + 60,1 , 0, 0, handler.blockEntity.IsLightBulbAvailable?20:0, handler.blockEntity.IsLightBulbAvailable?20:0, 20, 20);
+        context.drawTexture(SLOT_ITEM_AVAILABLE, x + 150, y + 60,1 , 0, 0, handler.blockEntity.IsChipAvailable?20:0, handler.blockEntity.IsChipAvailable?20:0, 20, 20);
     }
 
     @Override
