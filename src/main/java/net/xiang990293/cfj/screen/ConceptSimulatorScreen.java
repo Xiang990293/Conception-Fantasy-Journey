@@ -209,8 +209,9 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
         }
 
         public void onPress() {
-//            handler.blockEntity.isCalculating = true;
-//            handler.blockEntity.
+            handler.blockEntity.isCalculating = true;
+            this.active = handler.blockEntity.hasRecipe;
+            this.setDisabled(!handler.blockEntity.hasRecipe);
         }
 
         public void tick() {
@@ -225,17 +226,18 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
             super(x, y, ConceptSimulatorScreen.STOP_SIMULATING_TEXTURE, ConceptSimulatorScreen.START_SIMULATING_TEXTURE, ScreenTexts.EMPTY);
             texture = (handler.blockEntity.isSimulating? textureOn : textureOff);
             this.active = handler.blockEntity.isCalculated;
-            this.setDisabled(handler.blockEntity.isCalculated);
+            this.setDisabled(!handler.blockEntity.isCalculated);
         }
 
         public void onPress() {
             switchState();
-//            ConceptSimulatorBlockEntity.isSimulating = getState();
+            handler.blockEntity.isSimulating = getState();
             texture = ((texture == textureOn)? textureOff : textureOn);
         }
 
         public void tick() {
-
+            this.active = handler.blockEntity.isCalculated;
+            this.setDisabled(!handler.blockEntity.isCalculated);
         }
     }
 
@@ -271,7 +273,7 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
 
     private void renderProgressBar(DrawContext context, int x, int y) {
         context.drawTexture(TEXTURE, x + 98, y + 68, 0, 166, handler.getScaledProgress(), 4);
-        if (handler.isCalculating()) {
+        if (handler.blockEntity.isCalculating) {
             context.drawTexture(TEXTURE, x + 98, y + 68, 0, 166, handler.getScaledProgress(), 4);
         }
     }

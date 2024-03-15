@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -22,9 +23,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.xiang990293.cfj.ConceptFantasyJourney;
 import net.xiang990293.cfj.block.CfjBlocks;
 import net.xiang990293.cfj.item.CfjItems;
-import net.xiang990293.cfj.screen.ConceptSimulatorScreen;
 import net.xiang990293.cfj.screen.ConceptSimulatorScreenHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -89,17 +90,15 @@ public class ConceptSimulatorBlockEntity
     private int maxSleepEnergy = 100;
     private int fictitiousMass = 0;
     private int maxFictitiousMass = 500;
-    private int progress = 0;
-    private int maxProgress = 2000;
-    public boolean isCalculating = false;
-    public boolean isSimulating = false;
-    public boolean isCalculated = false;
-    public boolean isCalculable = false;
-    public boolean isSimulable = false;
-    public boolean hasRecipe = false;
-    public boolean IsChipAvailable = false;
-    public boolean IsCrystalAvailable = false;
-    public boolean IsLightBulbAvailable = false;
+    public int progress = 0;
+    public int maxProgress = 2000;
+    public boolean isCalculating;
+    public boolean isSimulating;
+    public boolean isCalculated;
+    public boolean hasRecipe;
+    public boolean IsChipAvailable;
+    public boolean IsCrystalAvailable;
+    public boolean IsLightBulbAvailable;
 
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
 
@@ -113,36 +112,33 @@ public class ConceptSimulatorBlockEntity
         return Text.translatable("blockentity.gui.concept_simulator");
     }
 
-
-
-    @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
-        Inventories.readNbt(nbt, inventory);
-        progress = nbt.getInt("concept_simulator.energy");
-        sleepEnergy = nbt.getInt("concept_simulator.sleep_energy");
-        fictitiousMass = nbt.getInt("concept_simulator.fictitious_mass");
-        progress = nbt.getInt("concept_simulator.progress");
-        isSimulating = nbt.getBoolean("concept_simulator.simulating");
-        isCalculating = nbt.getBoolean("concept_simulator.calculating");
-    }
-
     @Override
     public void writeNbt(NbtCompound nbt) {
         Inventories.writeNbt(nbt, inventory);
-        nbt.putInt("concept_simulator.energy", progress);
+        nbt.putInt("concept_simulator.energy", energy);
         nbt.putInt("concept_simulator.sleep_energy", sleepEnergy);
         nbt.putInt("concept_simulator.fictitious_mass", fictitiousMass);
-        nbt.putInt("concept_simulator.progress", progress);
         nbt.putBoolean("concept_simulator.simulating", isSimulating);
         nbt.putBoolean("concept_simulator.calculating", isCalculating);
         super.writeNbt(nbt);
     }
 
-    public void tick(World world, BlockPos pos, BlockState state) {
-        IsChipAvailable = (getStack(CHIPS_SLOT).getItem() == CfjItems.UnbreakableSword);
-        IsLightBulbAvailable = (getStack(LIGHT_BULB_SLOT).getItem() == CfjBlocks.ConceptSimulatorBlock.asItem());
-        IsCrystalAvailable = (getStack(CRYSTAL_SLOT).getItem() == CfjItems.ValentineChocolate);
+    @Override
+    public void readNbt(NbtCompound nbt) {
+        super.readNbt(nbt);
+        Inventories.readNbt(nbt, inventory);
+        energy = nbt.getInt("concept_simulator.energy");
+        sleepEnergy = nbt.getInt("concept_simulator.sleep_energy");
+        fictitiousMass = nbt.getInt("concept_simulator.fictitious_mass");
+        isSimulating = nbt.getBoolean("concept_simulator.simulating");
+        isCalculating = nbt.getBoolean("concept_simulator.calculating");
+    }
+
+    public static void tick(World world, BlockPos pos, BlockState state, ConceptSimulatorBlockEntity be) {
+        be.IsChipAvailable = (be.getStack(CHIPS_SLOT).getItem() == CfjItems.UnbreakableSword);
+        be.IsLightBulbAvailable = (be.getStack(LIGHT_BULB_SLOT).getItem() == CfjBlocks.ConceptSimulatorBlock.asItem());
+        be.IsCrystalAvailable = (be.getStack(CRYSTAL_SLOT).getItem() == CfjItems.ValentineChocolate);
+//        ConceptFantasyJourney.LOGGER.info("1 = "+isCalculating);
 
 
         //logic executing every tick in game
@@ -150,26 +146,43 @@ public class ConceptSimulatorBlockEntity
 //            return;
 //        }
 
-        hasRecipe = this.hasRecipe();
-        if(!isSimulating()) {
-            if(hasRecipe) {
-                this.calculationButtonAvailable();
-                if(this.isCalculating) {
+        be.hasRecipe = be.hasRecipe();
+        markDirty(world, pos, state);
+//        ConceptFantasyJourney.LOGGER.info("1 = "+isCalculating+" "+isSimulating);
+        if(!be.isSimulating) {
+            if(be.hasRecipe) {
+//                ConceptFantasyJourney.LOGGER.info("2 = "+isCalculating);
+                if(be.isCalculating) {
+                    be.progress += 1;
+                    markDirty(world, pos, state);
+//                    ConceptFantasyJourney.LOGGER.info("3! = "+progress);
+                }
+
+                if(be.hasCalculationFinished()) {
+                    be.resetProgress(state);
+                    be.isCalculated = true;
+                    be.isCalculating = false;
                     markDirty(world, pos, state);
                 }
 
-                if(hasCalculationFinished()) {
-                    this.SimulationButtonAvailable();
-                    this.resetProgress();
+                if(be.isCalculated) {
+                    markDirty(world, pos, state);
                 }
             } else {
-                this.resetProgress();
-//                this.failedSimulation();
+                be.resetProgress(state);
+                be.failedSimulationAndCalculation(state);
                 markDirty(world, pos, state);
             }
         }
 
 
+    }
+
+    private void failedSimulationAndCalculation(BlockState state) {
+        isCalculating  = false;
+        isSimulating = false;
+        progress = 0;
+        markDirty(world, pos, state);
     }
 
     public boolean hasRecipe() {
@@ -180,28 +193,17 @@ public class ConceptSimulatorBlockEntity
 
 
 
-    private void resetProgress() {
-        this.progress = 0;
+    private void resetProgress(BlockState state) {
+        progress = 0;
+        markDirty(world, pos, state);
     }
 
     private boolean hasCalculationFinished(){
-        return (this.progress >= maxProgress);
+        return (progress >= maxProgress);
     }
 
-    private boolean isSimulating(){
-        return (this.progress != 0);
-    }
-
-    private void calculationButtonAvailable(){
-        this.isCalculable = true;
-    }
-
-    private void SimulationButtonAvailable() {
-        this.isSimulable = true;
-    }
-
-    private boolean CalculationButtonClicked() {
-        return false;
+    private boolean isCalculating(){
+        return (progress != 0);
     }
 
     @Nullable

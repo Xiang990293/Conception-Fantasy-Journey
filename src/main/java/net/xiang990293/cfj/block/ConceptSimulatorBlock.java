@@ -15,6 +15,8 @@ import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.xiang990293.cfj.ConceptFantasyJourney;
+import net.xiang990293.cfj.ConceptFantasyJourneyClient;
 import net.xiang990293.cfj.block.entity.CfjBlockEntities;
 import net.xiang990293.cfj.block.entity.ConceptSimulatorBlockEntity;
 import org.jetbrains.annotations.Nullable;
@@ -68,22 +70,20 @@ public class ConceptSimulatorBlock
         super.onStateReplaced(state, world, pos, newState, moved);
     }
 
-    @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return validateTicker(type, CfjBlockEntities.CONCEPT_SIMULATOR_BLOCK_ENTITY,
-                (world1, pos, state1, BlockEntity) -> BlockEntity.tick(world1, pos, state1));
+        return validateTicker(type, CfjBlockEntities.CONCEPT_SIMULATOR_BLOCK_ENTITY, (world1, pos, state1, be) -> ConceptSimulatorBlockEntity.tick(world1, pos, state1, be));
     }
+
+//    private <T extends BlockEntity> BlockEntityTicker<T> checkType(BlockEntityType<T> type, BlockEntityType<ConceptSimulatorBlockEntity> conceptSimulatorBlockEntity, Object o) {
+//        return null;
+//    }
 
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         // 由于继承了BlockWithEntity，这个默认为INVISIBLE，所以我们需要更改它！
         return BlockRenderType.MODEL;
     }
-//    @Override
-//    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-//        return checkType(type, CfjBlockEntityType.CONCEPT_SIMULATOR_BLOCK_ENTITY_TYPE, ConceptSimulatorBlockEntity::serverTick);
-//    }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {

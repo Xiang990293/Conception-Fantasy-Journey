@@ -76,8 +76,8 @@ public class ConceptSimulatorScreenHandler extends ScreenHandler {
         return blockEntity.isCalculating;
     }
     public int getScaledProgress() {
-        int progress = this.propertyDelegate.get(6);
-        int maxProgress = this.propertyDelegate.get(7);
+        int progress = this.blockEntity.progress;
+        int maxProgress = this.blockEntity.maxProgress;
         int progressBarSize = 51; // Progress Bar width in pixels.
 
         return maxProgress != 0 && progress != 0 ? progressBarSize - progress * progressBarSize / maxProgress : progressBarSize;
