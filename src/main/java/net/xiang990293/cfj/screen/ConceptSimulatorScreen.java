@@ -4,12 +4,17 @@ import com.google.common.collect.Lists;
 //import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.gui.screen.ingame.BeaconScreen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.c2s.play.UpdateBeaconC2SPacket;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -17,6 +22,7 @@ import net.xiang990293.cfj.ConceptFantasyJourney;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.DrawContext;
 import net.xiang990293.cfj.block.entity.ConceptSimulatorBlockEntity;
+import net.xiang990293.cfj.network.CfjNetworkingContants;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +40,9 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
 
     private static final Identifier TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "textures/gui/concept_simulator.png");
     private final List<ConceptSimulatorScreen.ConceptSimulatorButtonWidget> buttons = Lists.newArrayList();
+
+    boolean isSimulating = false;
+    boolean isCalculating = false;
 
     public ConceptSimulatorScreen(ConceptSimulatorScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -204,19 +213,23 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
     class StartCalculatingButtonWidget extends ConceptSimulatorScreen.IconButtonWidget{
         public StartCalculatingButtonWidget(int x, int y) {
             super(x, y, ConceptSimulatorScreen.START_CALCULATING_TEXTURE, ScreenTexts.EMPTY);
-            this.active = handler.blockEntity.hasRecipe;
-            this.setDisabled(!handler.blockEntity.hasRecipe);
+            this.active = handler.blockEntity.hasRecipe();
+            this.setDisabled(!handler.blockEntity.hasRecipe());
+            ConceptSimulatorScreen.this.isCalculating = handler.blockEntity.isCalculating;
         }
 
         public void onPress() {
-            handler.blockEntity.isCalculating = true;
-            this.active = handler.blockEntity.hasRecipe;
-            this.setDisabled(!handler.blockEntity.hasRecipe);
+            this.active = handler.blockEntity.hasRecipe();
+            this.setDisabled(!handler.blockEntity.hasRecipe());
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeBoolean(true);
+            buf.writeBlockPos(handler.blockEntity.getPos());
+            ClientPlayNetworking.send(CfjNetworkingContants.Concept_Simulator_Start_Calculating_ID, buf);
         }
 
         public void tick() {
-            this.active = handler.blockEntity.hasRecipe;
-            this.setDisabled(!handler.blockEntity.hasRecipe);
+            this.active = handler.blockEntity.hasRecipe();
+            this.setDisabled(!handler.blockEntity.hasRecipe());
         }
     }
 
@@ -231,11 +244,16 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
 
         public void onPress() {
             switchState();
-            handler.blockEntity.isSimulating = getState();
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeBoolean(getState());
+            buf.writeBlockPos(handler.blockEntity.getPos());
+            ClientPlayNetworking.send(CfjNetworkingContants.Concept_Simulator_Switch_Simulating_ID, buf);
+            handler.blockEntity.markDirty();
             texture = ((texture == textureOn)? textureOff : textureOn);
         }
 
         public void tick() {
+            handler.blockEntity.markDirty();
             this.active = handler.blockEntity.isCalculated;
             this.setDisabled(!handler.blockEntity.isCalculated);
         }

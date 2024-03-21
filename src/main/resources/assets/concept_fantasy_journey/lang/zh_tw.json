@@ -13,5 +13,8 @@
   "block.concept_fantasy_journey.imagination_log": "想像木原木",
   "block.concept_fantasy_journey.concept_simulator": "概念模擬器",
 
-  "blockentity.gui.concept_simulator": "概念模擬器"
+  "blockentity.gui.concept_simulator": "概念模擬器",
+
+  "little.knowledge.pronunciation.he": "你知道嗎？摩訶、唐吉訶德的訶音同「喝」喔",
+  "little.knowledge": ""
 }

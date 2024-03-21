@@ -52,27 +52,30 @@ public class ConceptSimulatorBlock
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (world.isClient) {
+            return ActionResult.CONSUME;
+        } else {
+            NamedScreenHandlerFactory screenHandlerFactory = ((ConceptSimulatorBlockEntity) world.getBlockEntity(pos));
+            if (screenHandlerFactory != null) {
+                player.openHandledScreen(screenHandlerFactory);
+            }
             return ActionResult.SUCCESS;
         }
-        NamedScreenHandlerFactory screenHandlerFactory = ((ConceptSimulatorBlockEntity) world.getBlockEntity(pos));
-        BlockEntity blockEntity = world.getBlockEntity(pos);
-//        if (screenHandlerFactory != null) {
-//            player.openHandledScreen(screenHandlerFactory);
-//        }
-        if (blockEntity instanceof ConceptSimulatorBlockEntity) {
-            player.openHandledScreen(screenHandlerFactory);
-        }
-        return ActionResult.CONSUME;
     }
 
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        super.onStateReplaced(state, world, pos, newState, moved);
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof ConceptSimulatorBlockEntity) {
+                ItemScatterer.spawn(world, pos, (ConceptSimulatorBlockEntity)blockEntity);
+            }
+            super.onStateReplaced(state, world, pos, newState, moved);
+        }
     }
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return validateTicker(type, CfjBlockEntities.CONCEPT_SIMULATOR_BLOCK_ENTITY, (world1, pos, state1, be) -> ConceptSimulatorBlockEntity.tick(world1, pos, state1, be));
+        return validateTicker(type, CfjBlockEntities.CONCEPT_SIMULATOR_BLOCK_ENTITY, (world1, pos, state1, be) -> be.tick(world1, pos, state1));
     }
 
 //    private <T extends BlockEntity> BlockEntityTicker<T> checkType(BlockEntityType<T> type, BlockEntityType<ConceptSimulatorBlockEntity> conceptSimulatorBlockEntity, Object o) {

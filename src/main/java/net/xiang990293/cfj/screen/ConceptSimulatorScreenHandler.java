@@ -10,6 +10,7 @@ import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.xiang990293.cfj.ConceptFantasyJourney;
 import net.xiang990293.cfj.block.entity.ConceptSimulatorBlockEntity;
 
 public class ConceptSimulatorScreenHandler extends ScreenHandler {
@@ -18,13 +19,17 @@ public class ConceptSimulatorScreenHandler extends ScreenHandler {
     public final PropertyDelegate propertyDelegate;
     public final ConceptSimulatorBlockEntity blockEntity;
 
+    //client side
     public ConceptSimulatorScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
         this(syncId, inventory, inventory.player.getWorld().getBlockEntity(buf.readBlockPos()), new ArrayPropertyDelegate(8));
     }
+
+    //server side
     public ConceptSimulatorScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate arrayPropertyDelegate) {
         super(CfjScreenHandlers.CONCEPT_SIMULATOR_SCREEN_HANDLER, syncId);
-        checkSize(((Inventory)blockEntity), 2);
+        checkSize(((Inventory)blockEntity), 3);
         this.inventory = ((Inventory) blockEntity);
+        inventory.onOpen(playerInventory.player);
         this.propertyDelegate = arrayPropertyDelegate;
         this.blockEntity = ((ConceptSimulatorBlockEntity) blockEntity);
 
@@ -37,6 +42,9 @@ public class ConceptSimulatorScreenHandler extends ScreenHandler {
 
         addProperties(arrayPropertyDelegate);
     }
+
+    //we provide this getter for the synced integer so the Screen can access this to show it on screen
+
     public int getProperties(int index) {
         return this.propertyDelegate.get(index);
     }
@@ -72,12 +80,11 @@ public class ConceptSimulatorScreenHandler extends ScreenHandler {
         return this.inventory.canPlayerUse(player);
     }
 
-    public boolean isCalculating(){
-        return blockEntity.isCalculating;
-    }
     public int getScaledProgress() {
-        int progress = this.blockEntity.progress;
-        int maxProgress = this.blockEntity.maxProgress;
+        int progress = this.propertyDelegate.get(6);
+        int maxProgress = this.propertyDelegate.get(7);
+        boolean isCalculated = this.blockEntity.isCalculated;
+        ConceptFantasyJourney.LOGGER.info("world? "+this.blockEntity.getWorld());
         int progressBarSize = 51; // Progress Bar width in pixels.
 
         return maxProgress != 0 && progress != 0 ? progressBarSize - progress * progressBarSize / maxProgress : progressBarSize;
