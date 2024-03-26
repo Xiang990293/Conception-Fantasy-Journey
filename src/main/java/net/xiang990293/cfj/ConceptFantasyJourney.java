@@ -2,6 +2,7 @@ package net.xiang990293.cfj;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -69,26 +70,28 @@ public class ConceptFantasyJourney implements ModInitializer {
 			return ActionResult.PASS;
 		});
 
-		ServerPlayNetworking.registerGlobalReceiver(CfjNetworkingContants.Concept_Simulator_Start_Calculating_ID, (server, player, handler, buf, responseSender) -> {
+		ServerPlayNetworking.registerGlobalReceiver(CfjNetworkingContants.Concept_Simulator_Sync_ID, (server, player, handler, buf, responseSender) -> {
 			Boolean isCalculating = buf.readBoolean();
-			BlockPos pos = buf.readBlockPos();
-			server.execute(() -> {
-				World world = player.getEntityWorld();
-				BlockEntity blockEntity = world.getBlockEntity(pos);
-				if (blockEntity instanceof ConceptSimulatorBlockEntity) {
-					((ConceptSimulatorBlockEntity) blockEntity).isCalculating = isCalculating;
-				}
-			});
-		});
-
-		ServerPlayNetworking.registerGlobalReceiver(CfjNetworkingContants.Concept_Simulator_Switch_Simulating_ID, (server, player, handler, buf, responseSender) -> {
 			Boolean isSimulating = buf.readBoolean();
 			BlockPos pos = buf.readBlockPos();
 			server.execute(() -> {
 				World world = player.getEntityWorld();
 				BlockEntity blockEntity = world.getBlockEntity(pos);
 				if (blockEntity instanceof ConceptSimulatorBlockEntity) {
+					((ConceptSimulatorBlockEntity) blockEntity).isCalculating = isCalculating;
 					((ConceptSimulatorBlockEntity) blockEntity).isSimulating = isSimulating;
+				}
+			});
+		});
+
+		ClientPlayNetworking.registerGlobalReceiver(CfjNetworkingContants.Concept_Simulator_Finish_Calculating_ID, (client, handler, buf, responseSender) -> {
+			Boolean isCalculated = buf.readBoolean();
+			BlockPos pos = buf.readBlockPos();
+			client.execute(() -> {
+				World world = client.world;
+				BlockEntity blockEntity = world.getBlockEntity(pos);
+				if (blockEntity instanceof ConceptSimulatorBlockEntity) {
+					((ConceptSimulatorBlockEntity) blockEntity).isCalculated = isCalculated;
 				}
 			});
 		});

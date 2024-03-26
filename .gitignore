@@ -39,5 +39,4 @@ replay_*.log
 *.hprof
 *.jfr
 /production/*
-#/src/main/resources/assets/concept_fantasy_journey/gui/concept_simulator_slot_item_available.png
 /client/src/Main.java

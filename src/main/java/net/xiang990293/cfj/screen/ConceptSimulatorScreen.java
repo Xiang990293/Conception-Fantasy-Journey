@@ -41,8 +41,8 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
     private static final Identifier TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "textures/gui/concept_simulator.png");
     private final List<ConceptSimulatorScreen.ConceptSimulatorButtonWidget> buttons = Lists.newArrayList();
 
-    boolean isSimulating = false;
-    boolean isCalculating = false;
+    boolean isSimulating = handler.blockEntity.isSimulating;
+    boolean isCalculating = handler.blockEntity.isCalculating;
 
     public ConceptSimulatorScreen(ConceptSimulatorScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -151,12 +151,14 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
     @Environment(EnvType.CLIENT)
     abstract class BaseSwitchWidget extends BaseButtonWidget {
         public boolean isOn = false;
-        protected BaseSwitchWidget(int x, int y) {
+        protected BaseSwitchWidget(int x, int y, boolean default_state) {
             super(x, y);
+            this.isOn = default_state;
         }
 
-        protected BaseSwitchWidget(int x, int y, Text message) {
+        protected BaseSwitchWidget(int x, int y, Text message, boolean default_state) {
             super(x, y, message);
+            this.isOn = default_state;
         }
 
         public void switchState(){
@@ -189,15 +191,15 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
         protected final Identifier textureOff;
         protected Identifier texture;
 
-        protected IconSwitchWidget(int x, int y, Identifier textureOn, Identifier textureOff, Text message) {
-            super(x, y, message);
+        protected IconSwitchWidget(int x, int y, Identifier textureOn, Identifier textureOff, Text message, boolean default_state) {
+            super(x, y, message, default_state);
             this.textureOn = textureOn;
             this.textureOff = textureOff;
             this.texture = textureOff;
         }
 
-        protected IconSwitchWidget(int x, int y, Identifier texture, Text message) {
-            super(x, y, message);
+        protected IconSwitchWidget(int x, int y, Identifier texture, Text message, boolean default_state) {
+            super(x, y, message, default_state);
             this.textureOn = texture;
             this.textureOff = texture;
             this.texture = texture;
@@ -221,10 +223,7 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
         public void onPress() {
             this.active = handler.blockEntity.hasRecipe();
             this.setDisabled(!handler.blockEntity.hasRecipe());
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeBoolean(true);
-            buf.writeBlockPos(handler.blockEntity.getPos());
-            ClientPlayNetworking.send(CfjNetworkingContants.Concept_Simulator_Start_Calculating_ID, buf);
+            sendSyncPacket(true, isSimulating);
         }
 
         public void tick() {
@@ -236,27 +235,35 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
     @Environment(EnvType.CLIENT)
     class SwitchSimulatingButtonWidget extends ConceptSimulatorScreen.IconSwitchWidget {
         public SwitchSimulatingButtonWidget(int x, int y) {
-            super(x, y, ConceptSimulatorScreen.STOP_SIMULATING_TEXTURE, ConceptSimulatorScreen.START_SIMULATING_TEXTURE, ScreenTexts.EMPTY);
-            texture = (handler.blockEntity.isSimulating? textureOn : textureOff);
+            super(x, y, ConceptSimulatorScreen.STOP_SIMULATING_TEXTURE, ConceptSimulatorScreen.START_SIMULATING_TEXTURE, ScreenTexts.EMPTY, isSimulating);
+            texture = (isSimulating? textureOn : textureOff);
             this.active = handler.blockEntity.isCalculated;
             this.setDisabled(!handler.blockEntity.isCalculated);
         }
 
         public void onPress() {
             switchState();
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeBoolean(getState());
-            buf.writeBlockPos(handler.blockEntity.getPos());
-            ClientPlayNetworking.send(CfjNetworkingContants.Concept_Simulator_Switch_Simulating_ID, buf);
-            handler.blockEntity.markDirty();
             texture = ((texture == textureOn)? textureOff : textureOn);
+            sendSyncPacket(isCalculating, getState());
+
+            handler.blockEntity.toUpdatePacket();
+            ConceptSimulatorScreen.this.close();
         }
 
         public void tick() {
-            handler.blockEntity.markDirty();
+            isSimulating = handler.blockEntity.isSimulating;
+            isCalculating = handler.blockEntity.isCalculating;
             this.active = handler.blockEntity.isCalculated;
             this.setDisabled(!handler.blockEntity.isCalculated);
         }
+    }
+
+    private void sendSyncPacket(boolean isCalculating1, boolean isSimulating1) {
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeBoolean(isCalculating1);
+        buf.writeBoolean(isSimulating1);
+        buf.writeBlockPos(handler.blockEntity.getPos());
+        ClientPlayNetworking.send(CfjNetworkingContants.Concept_Simulator_Sync_ID, buf);
     }
 
 //    @Environment(EnvType.CLIENT)
@@ -275,7 +282,7 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
 //        }
 //    }
 
-    // 背景繪製，
+    // gui background draw
     @Override
     protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
 //        RenderSystem.setShader(GameRenderer::getPositionTexProgram);

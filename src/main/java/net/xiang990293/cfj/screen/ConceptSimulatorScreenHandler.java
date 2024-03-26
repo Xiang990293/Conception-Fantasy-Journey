@@ -84,10 +84,10 @@ public class ConceptSimulatorScreenHandler extends ScreenHandler {
         int progress = this.propertyDelegate.get(6);
         int maxProgress = this.propertyDelegate.get(7);
         boolean isCalculated = this.blockEntity.isCalculated;
-        ConceptFantasyJourney.LOGGER.info("world? "+this.blockEntity.getWorld());
+//        ConceptFantasyJourney.LOGGER.info("world? "+this.blockEntity.getWorld());
         int progressBarSize = 51; // Progress Bar width in pixels.
 
-        return maxProgress != 0 && progress != 0 ? progressBarSize - progress * progressBarSize / maxProgress : progressBarSize;
+        return isCalculated? progressBarSize : maxProgress != 0 && progress != 0 ? progressBarSize - progress * progressBarSize / maxProgress : progressBarSize;
     }
     private void addPlayerInventory(PlayerInventory playerInventory) {
         for (int i = 0; i < 3; ++i) {

@@ -3,6 +3,9 @@
  */
 package net.xiang990293.cfj.block.entity;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -19,6 +22,7 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
@@ -147,6 +151,7 @@ public class ConceptSimulatorBlockEntity
         IsChipAvailable = (getStack(CHIPS_SLOT).getItem() == CfjItems.UnbreakableSword);
         IsLightBulbAvailable = (getStack(LIGHT_BULB_SLOT).getItem() == CfjBlocks.ConceptSimulatorBlock.asItem());
         IsCrystalAvailable = (getStack(CRYSTAL_SLOT).getItem() == CfjItems.ValentineChocolate);
+        markDirtyAndSync(world, pos, state);
 //        ConceptFantasyJourney.LOGGER.info("1 = "+isCalculating);
 
 //        logic executing every tick in game
@@ -158,29 +163,38 @@ public class ConceptSimulatorBlockEntity
             if(this.hasRecipe()) {
                 if(isCalculating) {
                     progress += 1;
-                    markDirty(world, pos, state);
+                    markDirtyAndSync(world, pos, state);
                 }
 
                 if(this.hasCalculationFinished()) {
                     this.resetProgress(state);
                     isCalculated = true;
                     isCalculating = false;
-                    markDirty(world, pos, state);
-                }
 
-                if(isCalculated) {
-                    markDirty(world, pos, state);
+                    PacketByteBuf buf = PacketByteBufs.create();
+                    buf.writeBoolean(isCalculated);
+                    buf.writeBlockPos(this.getPos());
+
+                    for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, this.getPos())) {
+                        ServerPlayNetworking.send((ServerPlayerEntity) player, CfjNetworkingContants.Concept_Simulator_Finish_Calculating_ID, buf);
+                    }
+
+                    markDirtyAndSync(world, pos, state);
                 }
             } else {
                 this.resetProgress(state);
                 this.failedSimulationAndCalculation(state);
-                markDirty(world, pos, state);
+                markDirtyAndSync(world, pos, state);
             }
         } else if (isSimulating) {
-            markDirty(world, pos, state);
+            markDirtyAndSync(world, pos, state);
         }
+    }
 
-
+    protected void markDirtyAndSync(World world, BlockPos pos, BlockState state){
+        if (world instanceof ServerWorld)
+            ((ServerWorld)world).getChunkManager().markForUpdate(pos);
+        markDirty(world, pos, state);
     }
 
     private void failedSimulationAndCalculation(BlockState state) {
