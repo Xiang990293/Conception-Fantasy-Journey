@@ -26,22 +26,22 @@ public class UnbreakableTools {
             .maxDamage(-1)
     );
 
-    public static final ToolItem UnbreakablePickaxe = new PickaxeItem(CfjUnbreakableToolMaterial.INSTANCE,2147483647, 5.0f, new FabricItemSettings()
+    public static final ToolItem UnbreakablePickaxe = new UnbreakablePickaxeItem(CfjUnbreakableToolMaterial.INSTANCE,2147483647, 5.0f, new FabricItemSettings()
             .fireproof()
             .maxDamage(-1)
     );
 
-    public static final ToolItem UnbreakableAxe = new AxeItem(CfjUnbreakableToolMaterial.INSTANCE,2147483647, 5.0f, new FabricItemSettings()
+    public static final ToolItem UnbreakableAxe = new UnbreakableAxeItem(CfjUnbreakableToolMaterial.INSTANCE,2147483647, 5.0f, new FabricItemSettings()
             .fireproof()
             .maxDamage(-1)
     );
 
-    public static final ToolItem UnbreakableShovel = new ShovelItem(CfjUnbreakableToolMaterial.INSTANCE,2147483647, 5.0f, new FabricItemSettings()
+    public static final ToolItem UnbreakableShovel = new UnbreakableShovelItem(CfjUnbreakableToolMaterial.INSTANCE,2147483647, 5.0f, new FabricItemSettings()
             .fireproof()
             .maxDamage(-1)
     );
 
-    public static final ToolItem UnbreakableHoe = new HoeItem(CfjUnbreakableToolMaterial.INSTANCE,2147483647, 5.0f, new FabricItemSettings()
+    public static final ToolItem UnbreakableHoe = new UnbreakableHoeItem(CfjUnbreakableToolMaterial.INSTANCE,2147483647, 5.0f, new FabricItemSettings()
             .fireproof()
             .maxDamage(-1)
     );

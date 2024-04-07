@@ -1,20 +1,17 @@
 package net.xiang990293.cfj.item;
 
-import net.fabricmc.fabric.api.item.v1.CustomDamageHandler;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 import net.xiang990293.cfj.ConceptFantasyJourney;
-import net.xiang990293.cfj.item.tool.CfjUnbreakableToolMaterial;
 import net.xiang990293.cfj.item.tool.PureLoveTools;
 import net.xiang990293.cfj.item.tool.UnbreakableTools;
-
-import java.util.function.Consumer;
+import net.xiang990293.cfj.item.wing.WingItem;
 
 public class CfjItems {
     //public static final Item ValentineChocolate = registerItem("valentine_chocolate", new Item(new FabricItemSettings()));
@@ -26,6 +23,10 @@ public class CfjItems {
     public static final Item UnbreakablePickaxe = registerItem("unbreakable_pickaxe", UnbreakableTools.UnbreakablePickaxe);
     public static final Item UnbreakableHoe = registerItem("unbreakable_hoe", UnbreakableTools.UnbreakableHoe);
     public static final Item PureLoveSword = registerItem("pure_love_sword", PureLoveTools.PureLoveSword);
+    public static final Item WINGS = registerItem("wings", new WingItem(new FabricItemSettings()
+            .maxDamage(-1)
+            .rarity(Rarity.RARE)
+    ));
 
 
 

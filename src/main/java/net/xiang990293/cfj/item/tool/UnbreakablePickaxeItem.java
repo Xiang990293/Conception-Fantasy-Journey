@@ -3,21 +3,25 @@ package net.xiang990293.cfj.item.tool;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.item.HoeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.ToolItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
+import net.xiang990293.cfj.ConceptFantasyJourney;
 import net.xiang990293.cfj.item.CfjItems;
 
 import java.util.UUID;
 
-public class UnbreakableHoeItem extends HoeItem {
-    public UnbreakableHoeItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
-        super(toolMaterial, attackDamage, attackSpeed, settings);
-    }
+public class UnbreakablePickaxeItem extends PickaxeItem {
+    public UnbreakablePickaxeItem(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings) {
+            super(material, attackDamage, attackSpeed, settings);
+        }
 
     @Override
     public void onItemEntityDestroyed(ItemEntity entity) {
@@ -26,7 +30,7 @@ public class UnbreakableHoeItem extends HoeItem {
         java.util.Collection<ServerPlayerEntity> list = PlayerLookup.tracking((ServerWorld) world, entity.getBlockPos());
         Entity player = (entity.getOwner() != null)? entity.getOwner() : (Entity)list.toArray()[0];
         if (player != null) {
-            ItemEntity itemEntity = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), new ItemStack(CfjItems.UnbreakableHoe));
+            ItemEntity itemEntity = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), new ItemStack(CfjItems.UnbreakablePickaxe));
             UUID uuid = UUID.randomUUID();
             copiedNBT.putIntArray("UUID", new int[]{0, 0, 0, 0});
             itemEntity.readNbt(copiedNBT);

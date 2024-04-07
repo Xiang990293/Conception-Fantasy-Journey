@@ -38,6 +38,8 @@ public class CfjItemGroup {
                         entries.add(CfjItems.UnbreakablePickaxe);
                         entries.add(CfjItems.UnbreakableAxe);
                         entries.add(CfjItems.PureLoveSword);
+                        entries.add(CfjItems.WINGS);
+//                        entries.add(CfjItems.);
                     })
                     .build());
     public static void registerItemGroups() {
