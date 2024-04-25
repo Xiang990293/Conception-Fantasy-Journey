@@ -11,7 +11,7 @@
 		"homepage": "https://fabricmc.net/",
 		"sources": "https://github.com/FabricMC/fabric-example-mod"
 	},
-	"license": "MIT",
+	"license": "MIT License",
 	"icon": "assets/concept_fantasy_journey/icon.png",
 	"environment": "*",
 	"entrypoints": {
@@ -20,16 +20,20 @@
 		],
 		"client": [
 			"net.xiang990293.cfj.ConceptFantasyJourneyClient"
+		],
+		"fabric-datagen": [
+			"net.xiang990293.cfj.ConceptFantasyJourneyDataGenerator"
 		]
 	},
 	"mixins": [
-
+		"concept_fantasy_journey.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.0",
 		"minecraft": "~1.20.4",
 		"java": ">=17",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"fabric-key-binding-api-v1": "*"
 	},
 	"suggests": {
 		"another-mod": "*"

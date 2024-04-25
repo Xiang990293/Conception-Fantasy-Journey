@@ -39,6 +39,8 @@ public class CfjItemGroup {
                         entries.add(CfjItems.UnbreakableAxe);
                         entries.add(CfjItems.PureLoveSword);
                         entries.add(CfjItems.WINGS);
+
+                        entries.add(CfjItems.UnbreakableHelmet);
 //                        entries.add(CfjItems.);
                     })
                     .build());

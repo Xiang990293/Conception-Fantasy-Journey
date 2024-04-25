@@ -1,5 +1,6 @@
 package net.xiang990293.cfj.item.wing;
 
+import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.entity.EquipmentSlot;
@@ -12,8 +13,8 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.xiang990293.cfj.ConceptFantasyJourney;
 
-public class WingItem extends Item implements Equipment {
-    public WingItem(Item.Settings settings) {
+public class WingItem extends Item implements Equipment{
+    public WingItem(Settings settings) {
         super(settings);
         DispenserBlock.registerBehavior(this, ArmorItem.DISPENSER_BEHAVIOR);
     }
@@ -22,21 +23,24 @@ public class WingItem extends Item implements Equipment {
         return true;
     }
 
-
+    @Override
     public boolean canRepair(ItemStack stack, ItemStack ingredient) {
         return false;
     }
 
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ConceptFantasyJourney.LOGGER.info(""+user.getHandItems());
         return this.equipAndSwap(this, world, user, hand);
 //        WingItem test = new WingItem(new FabricItemSettings());
     }
 
+    @Override
     public SoundEvent getEquipSound() {
         return SoundEvents.ITEM_ARMOR_EQUIP_ELYTRA;
     }
 
+    @Override
     public EquipmentSlot getSlotType() {
         return EquipmentSlot.CHEST;
     }

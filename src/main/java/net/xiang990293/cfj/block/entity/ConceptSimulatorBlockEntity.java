@@ -3,7 +3,6 @@
  */
 package net.xiang990293.cfj.block.entity;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -24,11 +23,9 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.xiang990293.cfj.ConceptFantasyJourney;
 import net.xiang990293.cfj.block.CfjBlocks;
 import net.xiang990293.cfj.item.CfjItems;
 import net.xiang990293.cfj.network.CfjNetworkingContants;
@@ -52,9 +49,6 @@ public class ConceptSimulatorBlockEntity
                     case 5 -> ConceptSimulatorBlockEntity.this.maxFictitiousMass;
                     case 6 -> ConceptSimulatorBlockEntity.this.progress;
                     case 7 -> ConceptSimulatorBlockEntity.this.maxProgress;
-//                    case 8 -> ConceptSimulatorBlockEntity.this.isCalculating;
-//                    case 9 -> ConceptSimulatorBlockEntity.this.isCalculated;
-//                    case 10 -> ConceptSimulatorBlockEntity.this.isSimulating;
                     default -> 0;
                 };
             }
@@ -70,9 +64,6 @@ public class ConceptSimulatorBlockEntity
                     case 5 -> ConceptSimulatorBlockEntity.this.maxFictitiousMass = value;
                     case 6 -> ConceptSimulatorBlockEntity.this.progress = value;
                     case 7 -> ConceptSimulatorBlockEntity.this.maxProgress = value;
-//                    case 8 -> ConceptSimulatorBlockEntity.this.isCalculating = value;
-//                    case 9 -> ConceptSimulatorBlockEntity.this.isCalculated = value;
-//                    case 10 -> ConceptSimulatorBlockEntity.this.isSimulating = value;
                 }
             }
 
@@ -127,24 +118,27 @@ public class ConceptSimulatorBlockEntity
     public void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         Inventories.writeNbt(nbt, inventory);
-        nbt.putInt("concept_simulator.energy", energy);
-        nbt.putInt("concept_simulator.sleep_energy", sleepEnergy);
-        nbt.putInt("concept_simulator.fictitious_mass", fictitiousMass);
-        nbt.putBoolean("concept_simulator.simulating", isSimulating);
-        nbt.putBoolean("concept_simulator.calculating", isCalculating);
-        nbt.putBoolean("concept_simulator.calculated", isCalculated);
+        NbtCompound concept_simulator = new NbtCompound();
+        concept_simulator.putInt("concept_simulator.energy", energy);
+        concept_simulator.putInt("concept_simulator.sleep_energy", sleepEnergy);
+        concept_simulator.putInt("concept_simulator.fictitious_mass", fictitiousMass);
+        concept_simulator.putBoolean("concept_simulator.simulating", isSimulating);
+        concept_simulator.putBoolean("concept_simulator.calculating", isCalculating);
+        concept_simulator.putBoolean("concept_simulator.calculated", isCalculated);
+        nbt.put("concept_simulator",concept_simulator);
     }
 
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         Inventories.readNbt(nbt, inventory);
-        energy = nbt.getInt("concept_simulator.energy");
-        sleepEnergy = nbt.getInt("concept_simulator.sleep_energy");
-        fictitiousMass = nbt.getInt("concept_simulator.fictitious_mass");
-        isSimulating = nbt.getBoolean("concept_simulator.simulating");
-        isCalculating = nbt.getBoolean("concept_simulator.calculating");
-        isCalculated = nbt.getBoolean("concept_simulator.calculated");
+        NbtCompound concept_simulator = nbt.getCompound("concept_simulator");
+        energy = concept_simulator.getInt("concept_simulator.energy");
+        sleepEnergy = concept_simulator.getInt("concept_simulator.sleep_energy");
+        fictitiousMass = concept_simulator.getInt("concept_simulator.fictitious_mass");
+        isSimulating = concept_simulator.getBoolean("concept_simulator.simulating");
+        isCalculating = concept_simulator.getBoolean("concept_simulator.calculating");
+        isCalculated = concept_simulator.getBoolean("concept_simulator.calculated");
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
@@ -152,7 +146,6 @@ public class ConceptSimulatorBlockEntity
         IsLightBulbAvailable = (getStack(LIGHT_BULB_SLOT).getItem() == CfjBlocks.ConceptSimulatorBlock.asItem());
         IsCrystalAvailable = (getStack(CRYSTAL_SLOT).getItem() == CfjItems.ValentineChocolate);
         markDirtyAndSync(world, pos, state);
-//        ConceptFantasyJourney.LOGGER.info("1 = "+isCalculating);
 
 //        logic executing every tick in game
         if(world.isClient()){
@@ -243,3 +236,6 @@ public class ConceptSimulatorBlockEntity
     }
 }
 
+/*
+{FallFlying: 0b, abilities: {mayfly: 1b, flying: 0b}, Tags: ["inlist"]}
+*/

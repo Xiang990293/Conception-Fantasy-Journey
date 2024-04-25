@@ -1,0 +1,12 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "concept_fantasy_journey:item/wings",
+		"particle": "concept_fantasy_journey:item/wings"
+	},
+	"display": {
+		"head": {
+			"translation": [0, 5.25, 0]
+		}
+	}
+}

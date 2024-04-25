@@ -1,11 +1,16 @@
 {
   "item.concept_fantasy_journey.valentine_chocolate": "情人節巧克力",
-  "item.concept_fantasy_journey.unbreakable_sword": "不朽神劍",
-  "item.concept_fantasy_journey.unbreakable_shovel": "不朽神鏟",
-  "item.concept_fantasy_journey.unbreakable_axe": "不朽神斧",
-  "item.concept_fantasy_journey.unbreakable_pickaxe": "不朽神鎬",
-  "item.concept_fantasy_journey.unbreakable_hoe": "不朽神鋤",
+  "item.concept_fantasy_journey.unbreakable_sword": "不朽劍",
+  "item.concept_fantasy_journey.unbreakable_shovel": "不朽鏟",
+  "item.concept_fantasy_journey.unbreakable_axe": "不朽斧",
+  "item.concept_fantasy_journey.unbreakable_pickaxe": "不朽鎬",
+  "item.concept_fantasy_journey.unbreakable_hoe": "不朽鋤",
   "item.concept_fantasy_journey.pure_love_sword": "純愛之劍",
+  "item.concept_fantasy_journey.wings": "翅膀",
+  "item.concept_fantasy_journey.unbreakable_helmet": "不朽頭盔",
+  "item.concept_fantasy_journey.unbreakable_chestplate": "不朽鎧甲",
+  "item.concept_fantasy_journey.unbreakable_leggings": "不朽護蹆",
+  "item.concept_fantasy_journey.unbreakable_boots": "不朽靴",
 
   "itemgroup.food_and_drinks.title": "概念幻想冒險：食物及飲品",
   "itemgroup.blocks_and_tools.title": "概念幻想冒險：方塊及工具",
@@ -14,6 +19,9 @@
   "block.concept_fantasy_journey.concept_simulator": "概念模擬器",
 
   "blockentity.gui.concept_simulator": "概念模擬器",
+
+  "key.category.concept_fantasy_journey.wing": "概念幻想冒險：翅膀",
+  "key.concept_fantasy_journey.wing.fly.high": "向上飛升",
 
   "little.knowledge.pronunciation.he": "你知道嗎？摩訶、唐吉訶德的訶音同「喝」喔",
   "little.knowledge": ""
