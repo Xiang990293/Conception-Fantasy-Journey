@@ -6,11 +6,15 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.impl.registry.sync.packet.DirectRegistryPacketHandler;
+import net.fabricmc.fabric.mixin.networking.CustomPayloadC2SPacketMixin;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.xiang990293.cfj.item.wing.WingItem;
 import net.xiang990293.cfj.network.CfjNetworkingContants;
@@ -26,11 +30,13 @@ public class WingItemGeneralEvents {
             abilities.putBoolean("mayfly", flyable);
             nbt.put("abilities", abilities);
             player.readNbt(nbt);
+//            PacketCodec<Boolean> codec = new PacketCodec<Boolean>();
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeBoolean(flying); //flying
             buf.writeBoolean(flyable); //mayfly
             buf.writeBoolean(elytraFly); //elytraFly
             buf.writeBoolean(CreativeFlyed); //CreativeFlyed
+
             ClientPlayNetworking.send(CfjNetworkingContants.Wing_Fly_Sync_C2S_ID, buf);
         }
         else{ // what server player do when function called

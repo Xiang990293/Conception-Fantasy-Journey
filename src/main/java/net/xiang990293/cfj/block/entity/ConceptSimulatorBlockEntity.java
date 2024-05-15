@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class ConceptSimulatorBlockEntity
         extends BlockEntity
-        implements ExtendedScreenHandlerFactory, ImplementedInventory {
+        implements ExtendedScreenHandlerFactory, ImplementedInventory, getScreenOpeningData {
     public ConceptSimulatorBlockEntity(BlockPos pos, BlockState state) {
         super(CfjBlockEntities.CONCEPT_SIMULATOR_BLOCK_ENTITY, pos, state);
         this.propertyDelegate = new PropertyDelegate() {

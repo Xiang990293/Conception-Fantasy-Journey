@@ -50,7 +50,9 @@ public class ConceptSimulatorBlock
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+//        return super.onUse(state, world, pos, player, hit);
+
         if (world.isClient) {
             return ActionResult.CONSUME;
         } else {
