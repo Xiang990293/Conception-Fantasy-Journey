@@ -20,7 +20,7 @@ import java.util.UUID;
 
 public class UnbreakablePickaxeItem extends PickaxeItem {
     public UnbreakablePickaxeItem(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings) {
-            super(material, attackDamage, attackSpeed, settings);
+            super(material, settings);
         }
 
     @Override

@@ -54,14 +54,14 @@ public class ConceptSimulatorBlock
 //        return super.onUse(state, world, pos, player, hit);
 
         if (world.isClient) {
-            return ActionResult.CONSUME;
-        } else {
-            NamedScreenHandlerFactory screenHandlerFactory = ((ConceptSimulatorBlockEntity) world.getBlockEntity(pos));
-            if (screenHandlerFactory != null) {
-                player.openHandledScreen(screenHandlerFactory);
-            }
-            return ActionResult.SUCCESS;
+            return ActionResult.PASS;
         }
+
+        NamedScreenHandlerFactory screenHandlerFactory = ((ConceptSimulatorBlockEntity) world.getBlockEntity(pos));
+        if (screenHandlerFactory != null) {
+            player.openHandledScreen(screenHandlerFactory);
+        }
+        return ActionResult.SUCCESS;
     }
 
     @Override

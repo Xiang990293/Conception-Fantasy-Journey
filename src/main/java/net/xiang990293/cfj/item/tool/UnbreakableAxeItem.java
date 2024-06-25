@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public class UnbreakableAxeItem extends AxeItem {
     public UnbreakableAxeItem(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings) {
-            super(material, attackDamage, attackSpeed, settings);
+            super(material, settings);
         }
 
     @Override

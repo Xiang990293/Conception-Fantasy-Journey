@@ -3,21 +3,16 @@ package net.xiang990293.cfj.event;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.entity.event.v1.EntityElytraEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.fabric.impl.registry.sync.packet.DirectRegistryPacketHandler;
-import net.fabricmc.fabric.mixin.networking.CustomPayloadC2SPacketMixin;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.xiang990293.cfj.item.wing.WingItem;
-import net.xiang990293.cfj.network.CfjNetworkingContants;
+import net.xiang990293.cfj.network.payload.WingFlySyncC2SPayload;
+import net.xiang990293.cfj.network.payload.WingFlySyncS2CPayload;
 import net.xiang990293.cfj.util.FlyingData;
 
 public class WingItemGeneralEvents {
@@ -30,14 +25,8 @@ public class WingItemGeneralEvents {
             abilities.putBoolean("mayfly", flyable);
             nbt.put("abilities", abilities);
             player.readNbt(nbt);
-//            PacketCodec<Boolean> codec = new PacketCodec<Boolean>();
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeBoolean(flying); //flying
-            buf.writeBoolean(flyable); //mayfly
-            buf.writeBoolean(elytraFly); //elytraFly
-            buf.writeBoolean(CreativeFlyed); //CreativeFlyed
 
-            ClientPlayNetworking.send(CfjNetworkingContants.Wing_Fly_Sync_C2S_ID, buf);
+            ClientPlayNetworking.send(new WingFlySyncC2SPayload(flying, flyable, elytraFly, CreativeFlyed));
         }
         else{ // what server player do when function called
             NbtCompound abilities = new NbtCompound();
@@ -50,12 +39,8 @@ public class WingItemGeneralEvents {
             nbt.put("flyingTags",flyingTags);
             player.readNbt(nbt);
 
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeBoolean(flying); //flying
-            buf.writeBoolean(flyable); //mayfly
-
             FlyingData.syncData(elytraFly,CreativeFlyed, (ServerPlayerEntity) player);
-            ServerPlayNetworking.send((ServerPlayerEntity) player, CfjNetworkingContants.Wing_Fly_Sync_S2C_ID, buf);
+            ServerPlayNetworking.send((ServerPlayerEntity) player, new WingFlySyncS2CPayload(flying, flyable));
         }
     }
 

@@ -7,7 +7,7 @@ import net.minecraft.state.property.BooleanProperty;
 
 public class ChargeableBlock extends Block {
     public static final BooleanProperty CHARGED = BooleanProperty.of("charged");
-    public static final ChargeableBlock CHARGEABLE_BLOCK = new ChargeableBlock(FabricBlockSettings.copyOf(Blocks.STONE));
+    public static final ChargeableBlock CHARGEABLE_BLOCK = new ChargeableBlock(Block.Settings.create());
 
     public ChargeableBlock(Settings settings) {
         super(settings);

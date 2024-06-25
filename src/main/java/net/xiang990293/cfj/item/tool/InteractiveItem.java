@@ -45,7 +45,7 @@ public class InteractiveItem extends Item {
         return super.useOnEntity(stack, user, entity, hand);
     }
 
-    @Override
+//    @Override
     public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
         return ImmutableMultimap.of();
     }

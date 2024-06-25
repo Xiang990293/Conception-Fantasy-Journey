@@ -22,7 +22,7 @@ public class CfjModelProvider extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator){
-        itemModelGenerator.registerArmor((ArmorItem) CfjItems.UnbreakableHelmet);
+//        itemModelGenerator.registerArmor((ArmorItem) CfjItems.UnbreakableHelmet);
         itemModelGenerator.registerArmor((ArmorItem) CfjItems.WINGS);
     }
 }

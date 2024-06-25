@@ -19,7 +19,7 @@ import java.util.UUID;
 
 public class UnbreakableShovelItem extends ShovelItem {
     public UnbreakableShovelItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
-        super(toolMaterial, attackDamage, attackSpeed, settings);
+        super(toolMaterial, settings);
     }
 
     @Override

@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class UnbreakableHoeItem extends HoeItem {
     public UnbreakableHoeItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
-        super(toolMaterial, attackDamage, attackSpeed, settings);
+        super(toolMaterial, settings);
     }
 
     @Override

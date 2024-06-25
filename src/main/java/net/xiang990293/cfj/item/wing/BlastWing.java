@@ -1,6 +1,5 @@
 package net.xiang990293.cfj.item.wing;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
 
 public class BlastWing extends WingItem{
@@ -8,6 +7,6 @@ public class BlastWing extends WingItem{
         super(settings);
     }
 
-//    public BlastWing test = new BlastWing(new FabricItemSettings()).onClicked();
+//    public BlastWing test = new BlastWing(new Item.Settings()).onClicked();
 }
 

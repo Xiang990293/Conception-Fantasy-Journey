@@ -24,15 +24,15 @@ public class UnbreakableToolItem extends ToolItem {
         java.util.Collection<ServerPlayerEntity> list = PlayerLookup.tracking((ServerWorld) world, entity.getBlockPos());
         Entity player = (entity.getOwner() != null)? entity.getOwner() : (Entity)list.toArray()[0];
         if (player != null) {
-            ItemEntity itemEntity = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), new ItemStack(CfjItems.UnbreakableSword));
+//            ItemEntity itemEntity = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), new ItemStack(CfjItems.UnbreakableSword));
             UUID uuid = UUID.randomUUID();
             copiedNBT.putIntArray("UUID", new int[]{0, 0, 0, 0});
-            itemEntity.readNbt(copiedNBT);
-            itemEntity.teleport(player.getX(), player.getY() + 1, player.getZ());
-            itemEntity.setUuid(uuid);
-            ItemEntity entityToSpawn = itemEntity;
-            entityToSpawn.setPickupDelay(1);
-            world.spawnEntity(entityToSpawn);
+//            itemEntity.readNbt(copiedNBT);
+//            itemEntity.teleport(player.getX(), player.getY() + 1, player.getZ());
+//            itemEntity.setUuid(uuid);
+//            ItemEntity entityToSpawn = itemEntity;
+//            entityToSpawn.setPickupDelay(1);
+//            world.spawnEntity(entityToSpawn);
         }
     }
 }

@@ -2,7 +2,6 @@ package net.xiang990293.cfj.block;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.Instrument;
 import net.minecraft.item.BlockItem;
@@ -14,8 +13,7 @@ import net.minecraft.util.Identifier;
 import net.xiang990293.cfj.ConceptFantasyJourney;
 
 public class CfjBlocks extends Blocks{
-    public static final Block ConceptSimulatorBlock = registerBlock("concept_simulator", new ConceptSimulatorBlock(FabricBlockSettings
-            .copyOf(Blocks.IRON_BLOCK)
+    public static final Block ConceptSimulatorBlock = registerBlock("concept_simulator", new ConceptSimulatorBlock(AbstractBlock.Settings.create()
             .instrument(Instrument.IRON_XYLOPHONE)
             .requiresTool()
             .strength(3.5f)

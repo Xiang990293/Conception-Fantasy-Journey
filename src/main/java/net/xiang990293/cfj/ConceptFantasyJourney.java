@@ -19,10 +19,12 @@ public class ConceptFantasyJourney implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	private static final ItemGroup ConceptFantasyJourneyItems = FabricItemGroup.builder()
-			.icon(() -> new ItemStack(CfjItems.ValentineChocolate))
+//			.icon(() -> new ItemStack(CfjItems.ValentineChocolate))
+			.icon(() -> new ItemStack(Items.KELP))
 			.displayName(Text.translatable("itemGroup.tutorial.test_group"))
 			.entries((context, entries) -> {
-				entries.add(CfjItems.ValentineChocolate);
+//				entries.add(CfjItems.ValentineChocolate);
+				entries.add(Items.KELP);
 			})
 			.build();
 
@@ -34,7 +36,7 @@ public class ConceptFantasyJourney implements ModInitializer {
 
 		LOGGER.info("Hello Fabric world!");
 		CfjItemGroup.registerItemGroups();
-		CfjItems.registerCfjItems();
+//		CfjItems.registerCfjItems(); // problem
 
 		CfjBlocks.registerCfjBlocks();
 		CfjBlockEntities.registerCfjBlockEntities();

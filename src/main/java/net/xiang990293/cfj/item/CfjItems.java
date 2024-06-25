@@ -1,6 +1,5 @@
 package net.xiang990293.cfj.item;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.*;
@@ -18,22 +17,22 @@ import net.xiang990293.cfj.item.wing.WingItem;
 public class CfjItems {
     //public static final Item ValentineChocolate = registerItem("valentine_chocolate", new Item(new FabricItemSettings()));
 
-    public static final Item ValentineChocolate = registerItem("valentine_chocolate", new Item(new FabricItemSettings().food(CfjFoodComponents.Valentine_Chocolate)));
+    public static final Item ValentineChocolate = registerItem("valentine_chocolate", new Item(new Item.Settings().food(CfjFoodComponents.Valentine_Chocolate)));
 
     public static final Item UnbreakableSword = registerItem("unbreakable_sword", UnbreakableTools.UnbreakableSword);
-    public static final Item UnbreakableShovel = registerItem("unbreakable_shovel", UnbreakableTools.UnbreakableShovel);
-    public static final Item UnbreakableAxe = registerItem("unbreakable_axe", UnbreakableTools.UnbreakableAxe);
-    public static final Item UnbreakablePickaxe = registerItem("unbreakable_pickaxe", UnbreakableTools.UnbreakablePickaxe);
-    public static final Item UnbreakableHoe = registerItem("unbreakable_hoe", UnbreakableTools.UnbreakableHoe);
+//    public static final Item UnbreakableShovel = registerItem("unbreakable_shovel", UnbreakableTools.UnbreakableShovel);
+//    public static final Item UnbreakableAxe = registerItem("unbreakable_axe", UnbreakableTools.UnbreakableAxe);
+//    public static final Item UnbreakablePickaxe = registerItem("unbreakable_pickaxe", UnbreakableTools.UnbreakablePickaxe);
+//    public static final Item UnbreakableHoe = registerItem("unbreakable_hoe", UnbreakableTools.UnbreakableHoe);
 
-    public static final Item PureLoveSword = registerItem("pure_love_sword", PureLoveTools.PureLoveSword);
+//    public static final Item PureLoveSword = registerItem("pure_love_sword", PureLoveTools.PureLoveSword);
 
-    public static final Item WINGS = registerItem("wings", new WingItem(new FabricItemSettings()
-            .maxDamage(-1)
-            .rarity(Rarity.RARE)
-    ));
+//    public static final Item WINGS = registerItem("wings", new WingItem(new Item.Settings()
+//            .maxDamage(-1)
+//            .rarity(Rarity.RARE)
+//    ));
 
-    public static final Item UnbreakableHelmet = registerItem("unbreakable_helmet", new ArmorItem(CfjArmorMaterials.UNBREAKABLE, ArmorItem.Type.HELMET, new FabricItemSettings()));
+//    //public static final Item UnbreakableHelmet = registerItem("unbreakable_helmet", new ArmorItem(CfjArmorMaterials.UNBREAKABLE, ArmorItem.Type.HELMET, new Item.Settings()));
 
 
 

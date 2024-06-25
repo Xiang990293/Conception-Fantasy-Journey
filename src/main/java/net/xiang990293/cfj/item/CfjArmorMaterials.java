@@ -9,8 +9,8 @@ import net.xiang990293.cfj.ConceptFantasyJourney;
 
 import java.util.function.Supplier;
 
-public enum CfjArmorMaterials implements ArmorMaterial {
-    UNBREAKABLE("unbreakable", 0, new int[] {2147483647,2147483647,2147483647,2147483647}, -1, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2f,10, null)
+public enum CfjArmorMaterials {
+    UNBREAKABLE("unbreakable", 0, new int[] {2147483647,2147483647,2147483647,2147483647}, -1, SoundEvents.ITEM_AXE_SCRAPE, 2f,10, null)
     ;
     private final String name;
     private final int DurabilityMultiplier;
@@ -35,42 +35,42 @@ public enum CfjArmorMaterials implements ArmorMaterial {
         this.repairIngredient = repairIngredient;
     }
 
-    @Override
+//    @Override
     public int getDurability(ArmorItem.Type type) {
         return BASE_DURABILITY[type.ordinal()] * this.DurabilityMultiplier;
     }
 
-    @Override
+//    @Override
     public int getProtection(ArmorItem.Type type) {
         return protectionAmounts[type.ordinal()];
     }
 
-    @Override
+//    @Override
     public int getEnchantability() {
         return this.enchantability;
     }
 
-    @Override
+//    @Override
     public SoundEvent getEquipSound() {
         return this.equipSound;
     }
 
-    @Override
+//    @Override
     public Ingredient getRepairIngredient() {
         return this.repairIngredient.get();
     }
 
-    @Override
+//    @Override
     public String getName() {
         return ConceptFantasyJourney.MOD_ID + ":" + this.name;
     }
 
-    @Override
+//    @Override
     public float getToughness() {
         return this.toughness;
     }
 
-    @Override
+//    @Override
     public float getKnockbackResistance() {
         return this.knockbackResistance;
     }

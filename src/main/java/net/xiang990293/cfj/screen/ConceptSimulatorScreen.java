@@ -1,31 +1,23 @@
 package net.xiang990293.cfj.screen;
 
 import com.google.common.collect.Lists;
-//import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.client.gui.screen.ingame.BeaconScreen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.PressableWidget;
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.packet.c2s.play.UpdateBeaconC2SPacket;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.xiang990293.cfj.ConceptFantasyJourney;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.DrawContext;
-import net.xiang990293.cfj.block.entity.ConceptSimulatorBlockEntity;
-import net.xiang990293.cfj.network.CfjNetworkingContants;
+import net.xiang990293.cfj.network.payload.ConceptSimulatorSyncPayload;
 
 import java.util.List;
-import java.util.Optional;
 
 public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreenHandler> {
 
@@ -258,12 +250,8 @@ public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreen
         }
     }
 
-    private void sendSyncPacket(boolean isCalculating1, boolean isSimulating1) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeBoolean(isCalculating1);
-        buf.writeBoolean(isSimulating1);
-        buf.writeBlockPos(handler.blockEntity.getPos());
-        ClientPlayNetworking.send(CfjNetworkingContants.Concept_Simulator_Sync_ID, buf);
+    private void sendSyncPacket(boolean isCalculating, boolean isSimulating) {
+        ClientPlayNetworking.send(new ConceptSimulatorSyncPayload(isCalculating, isSimulating, handler.blockEntity.getPos()));
     }
 
 //    @Environment(EnvType.CLIENT)

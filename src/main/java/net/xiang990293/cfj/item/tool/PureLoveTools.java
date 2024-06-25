@@ -1,10 +1,9 @@
 package net.xiang990293.cfj.item.tool;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.*;
 
 public class PureLoveTools {
-    public static final ToolItem PureLoveSword = new PureLoveSwordItem(CfjPureLoveToolMaterial.INSTANCE,0, 5.0f, new FabricItemSettings()
+    public static final ToolItem PureLoveSword = new PureLoveSwordItem(CfjPureLoveToolMaterial.INSTANCE,0, 5.0f, new Item.Settings()
             .fireproof()
             .maxDamage(-1)
     );

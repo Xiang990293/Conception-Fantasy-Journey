@@ -19,9 +19,9 @@ public class CfjItemGroup {
             new Identifier(ConceptFantasyJourney.MOD_ID, "food_and_drinks"),
             FabricItemGroup.builder()
                     .displayName(Text.translatable("itemgroup.food_and_drinks.title"))
-                    .icon(() -> new ItemStack(CfjItems.ValentineChocolate))
+//                    .icon(() -> new ItemStack(CfjItems.ValentineChocolate))
                     .entries((displayContext, entries) -> {
-                        entries.add(CfjItems.ValentineChocolate);
+//                        entries.add(CfjItems.ValentineChocolate);
                     })
                     .build());
     public static final ItemGroup cfj_blocks_and_tools_group = Registry.register(Registries.ITEM_GROUP,
@@ -32,15 +32,15 @@ public class CfjItemGroup {
                     .entries((displayContext, entries) -> {
                         entries.add(CfjBlocks.ConceptSimulatorBlock);
                         entries.add(CfjBlocks.ImaginationLogBlock);
-                        entries.add(CfjItems.UnbreakableSword);
-                        entries.add(CfjItems.UnbreakableShovel);
-                        entries.add(CfjItems.UnbreakableHoe);
-                        entries.add(CfjItems.UnbreakablePickaxe);
-                        entries.add(CfjItems.UnbreakableAxe);
-                        entries.add(CfjItems.PureLoveSword);
-                        entries.add(CfjItems.WINGS);
+//                        entries.add(CfjItems.UnbreakableSword);
+//                        entries.add(CfjItems.UnbreakableShovel);
+//                        entries.add(CfjItems.UnbreakableHoe);
+//                        entries.add(CfjItems.UnbreakablePickaxe);
+//                        entries.add(CfjItems.UnbreakableAxe);
+//                        entries.add(CfjItems.PureLoveSword);
+//                        entries.add(CfjItems.WINGS);
 
-                        entries.add(CfjItems.UnbreakableHelmet);
+//                        entries.add(CfjItems.UnbreakableHelmet);
 //                        entries.add(CfjItems.);
                     })
                     .build());

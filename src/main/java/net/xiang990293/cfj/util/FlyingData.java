@@ -6,6 +6,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.xiang990293.cfj.network.CfjNetworkingContants;
+import net.xiang990293.cfj.network.payload.CustomWingFlySyncPayload;
 
 public class FlyingData {
     public static void changeData(IEntityDataSaver player, boolean elytraFly, boolean creativeFlyed){
@@ -20,6 +21,6 @@ public class FlyingData {
         PacketByteBuf buffer = PacketByteBufs.create();
         buffer.writeBoolean(elytrafly);
         buffer.writeBoolean(creativeFlyed);
-        ServerPlayNetworking.send(player, CfjNetworkingContants.Custom_Wing_Fly_Sync_ID, buffer);
+        ServerPlayNetworking.send(player, new CustomWingFlySyncPayload(elytrafly, creativeFlyed));
     }
 }

@@ -14,10 +14,10 @@ public class UnbreakableSwordAttackEntityItemDrop {
                     player.getMainHandStack().isOf(CfjItems.PureLoveSword)) {
                 entity.damage(CfjDamageTypes.of(world, CfjDamageTypes.EMOTIONAL_DAMAGE), 1.0F);
 
-                ItemEntity entityToSpawn = new ItemEntity(world, entity.getX(), entity.getY(), entity.getZ(), new ItemStack(CfjItems.ValentineChocolate));
-                entityToSpawn.setPickupDelay(10);
+//                ItemEntity entityToSpawn = new ItemEntity(world, entity.getX(), entity.getY(), entity.getZ(), new ItemStack(CfjItems.ValentineChocolate));
+//                entityToSpawn.setPickupDelay(10);
 
-                world.spawnEntity(entityToSpawn);
+//                world.spawnEntity(entityToSpawn);
             }
 
             return ActionResult.PASS;

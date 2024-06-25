@@ -1,15 +1,19 @@
 package net.xiang990293.cfj.screen;
 
+import io.netty.buffer.ByteBuf;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.util.math.BlockPos;
 import net.xiang990293.cfj.ConceptFantasyJourney;
 import net.xiang990293.cfj.block.entity.ConceptSimulatorBlockEntity;
 
@@ -18,11 +22,6 @@ public class ConceptSimulatorScreenHandler extends ScreenHandler {
     private final Inventory inventory;
     public final PropertyDelegate propertyDelegate;
     public final ConceptSimulatorBlockEntity blockEntity;
-
-    //client side
-    public ConceptSimulatorScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
-        this(syncId, inventory, inventory.player.getWorld().getBlockEntity(buf.readBlockPos()), new ArrayPropertyDelegate(8));
-    }
 
     //server side
     public ConceptSimulatorScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate arrayPropertyDelegate) {
@@ -42,6 +41,37 @@ public class ConceptSimulatorScreenHandler extends ScreenHandler {
 
         addProperties(arrayPropertyDelegate);
     }
+
+    //server side
+    public ConceptSimulatorScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity) {
+        this(syncId, playerInventory, blockEntity, new ArrayPropertyDelegate(8));
+    }
+
+    //client side, call when server side blockEntity call writeScreenOpeningData()
+    public ConceptSimulatorScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
+        // Object pos is type of ConceptSimulatorBlockEntity, but I need to wrote as Object which I don't know.
+        super(CfjScreenHandlers.CONCEPT_SIMULATOR_SCREEN_HANDLER, syncId);
+        BlockPos pos = buf.readBlockPos();
+        BlockEntity blockEntity = playerInventory.player.getWorld().getBlockEntity((BlockPos) pos);
+        checkSize(((Inventory)blockEntity), 3);
+        this.inventory = ((Inventory) blockEntity);
+        inventory.onOpen(playerInventory.player);
+        this.propertyDelegate = new ArrayPropertyDelegate(3);
+        this.blockEntity = ((ConceptSimulatorBlockEntity) blockEntity);
+
+        this.addSlot(new Slot(inventory,0,152,62));
+        this.addSlot(new Slot(inventory,1,79,17));
+        this.addSlot(new Slot(inventory,2,79,62));
+
+        addPlayerInventory(playerInventory);
+        addPlayerHotbar(playerInventory);
+
+//        addProperties(arrayPropertyDelegate);
+    }
+
+//    public ConceptSimulatorScreenHandler(int syncId, PlayerInventory playerInventory, Object o) {
+//        super(CfjScreenHandlers.CONCEPT_SIMULATOR_SCREEN_HANDLER, syncId);
+//    }
 
     //we provide this getter for the synced integer so the Screen can access this to show it on screen
 
@@ -89,6 +119,7 @@ public class ConceptSimulatorScreenHandler extends ScreenHandler {
 
         return isCalculated? progressBarSize : maxProgress != 0 && progress != 0 ? progressBarSize - progress * progressBarSize / maxProgress : progressBarSize;
     }
+
     private void addPlayerInventory(PlayerInventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
