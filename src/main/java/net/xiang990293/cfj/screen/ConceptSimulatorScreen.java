@@ -21,16 +21,16 @@ import java.util.List;
 
 public class ConceptSimulatorScreen extends HandledScreen<ConceptSimulatorScreenHandler> {
 
-    private static final Identifier BUTTON_DISABLED_TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_button_disabled.png");
-    private static final Identifier BUTTON_SELECTED_TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_button_disabled.png");
-    private static final Identifier BUTTON_HIGHLIGHTED_TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_button_highlighted.png");
-    private static final Identifier BUTTON_TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_button.png");
-    private static final Identifier START_SIMULATING_TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_start_simulating_icon.png");
-    private static final Identifier STOP_SIMULATING_TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_stop_simulating_icon.png");
-    private static final Identifier START_CALCULATING_TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_start_calculating_icon.png");
-    private static final Identifier SLOT_ITEM_AVAILABLE = new Identifier(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_slot_item_available.png");
+    private static final Identifier BUTTON_DISABLED_TEXTURE = Identifier.of(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_button_disabled.png");
+    private static final Identifier BUTTON_SELECTED_TEXTURE = Identifier.of(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_button_disabled.png");
+    private static final Identifier BUTTON_HIGHLIGHTED_TEXTURE = Identifier.of(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_button_highlighted.png");
+    private static final Identifier BUTTON_TEXTURE = Identifier.of(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_button.png");
+    private static final Identifier START_SIMULATING_TEXTURE = Identifier.of(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_start_simulating_icon.png");
+    private static final Identifier STOP_SIMULATING_TEXTURE = Identifier.of(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_stop_simulating_icon.png");
+    private static final Identifier START_CALCULATING_TEXTURE = Identifier.of(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_start_calculating_icon.png");
+    private static final Identifier SLOT_ITEM_AVAILABLE = Identifier.of(ConceptFantasyJourney.MOD_ID, "gui/concept_simulator_slot_item_available.png");
 
-    private static final Identifier TEXTURE = new Identifier(ConceptFantasyJourney.MOD_ID, "textures/gui/concept_simulator.png");
+    private static final Identifier TEXTURE = Identifier.of(ConceptFantasyJourney.MOD_ID, "textures/gui/concept_simulator.png");
     private final List<ConceptSimulatorScreen.ConceptSimulatorButtonWidget> buttons = Lists.newArrayList();
 
     boolean isSimulating = handler.blockEntity.isSimulating;

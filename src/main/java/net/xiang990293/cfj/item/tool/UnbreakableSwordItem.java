@@ -22,20 +22,20 @@ public class UnbreakableSwordItem extends SwordItem {
 
     @Override
     public void onItemEntityDestroyed(ItemEntity entity) {
-        World world = entity.getWorld();
-        NbtCompound copiedNBT = entity.writeNbt(new NbtCompound());
-        java.util.Collection<ServerPlayerEntity> list = PlayerLookup.tracking((ServerWorld) world, entity.getBlockPos());
-        Entity player = (entity.getOwner() != null)? entity.getOwner() : (Entity)list.toArray()[0];
-        if (player != null) {
+//        World world = entity.getWorld();
+//        NbtCompound copiedNBT = entity.writeNbt(new NbtCompound());
+//        java.util.Collection<ServerPlayerEntity> list = PlayerLookup.tracking((ServerWorld) world, entity.getBlockPos());
+//        Entity player = (entity.getOwner() != null)? entity.getOwner() : (Entity)list.toArray()[0];
+//        if (player != null) {
 //            ItemEntity itemEntity = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), new ItemStack(CfjItems.UnbreakableSword));
-            UUID uuid = UUID.randomUUID();
-            copiedNBT.putIntArray("UUID", new int[]{0, 0, 0, 0});
+//            UUID uuid = UUID.randomUUID();
+//            copiedNBT.putIntArray("UUID", new int[]{0, 0, 0, 0});
 //            itemEntity.readNbt(copiedNBT);
 //            itemEntity.teleport(player.getX(), player.getY() + 1, player.getZ());
 //            itemEntity.setUuid(uuid);
 //            ItemEntity entityToSpawn = itemEntity;
 //            entityToSpawn.setPickupDelay(1);
 //            world.spawnEntity(entityToSpawn);
-        }
+//        }
     }
 }

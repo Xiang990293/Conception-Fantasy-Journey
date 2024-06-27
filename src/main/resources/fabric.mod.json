@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "concept_fantasy_journey",
-	"version": "0.0.1",
+	"version": "${version}",
 	"name": "Conception Fantasy Journey",
 	"description": "Includes nearly all of concept around the world, and also able to create your own!",
 	"authors": [
@@ -34,7 +34,7 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.15.11",
-		"minecraft": "~1.20.6",
+		"minecraft": "~1.21",
 		"java": ">=21",
 		"fabric-api": "*"
 	},

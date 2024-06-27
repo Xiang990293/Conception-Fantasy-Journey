@@ -43,7 +43,7 @@ import java.util.function.UnaryOperator;
 
 public class ConceptSimulatorBlockEntity
         extends BlockEntity
-        implements ExtendedScreenHandlerFactory{
+        implements ExtendedScreenHandlerFactory, ImplementedInventory{
     public ConceptSimulatorBlockEntity(BlockPos pos, BlockState state) {
         super(CfjBlockEntities.CONCEPT_SIMULATOR_BLOCK_ENTITY, pos, state);
     }
@@ -109,7 +109,7 @@ public class ConceptSimulatorBlockEntity
     public final int propertyCount = 8;
     public static ConceptSimulatorWrapperLookup wrapperLookup;
 
-    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
+    public DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
 
     @Override
     public Text getDisplayName() {
@@ -246,8 +246,8 @@ public class ConceptSimulatorBlockEntity
     //
     //您在此处插入内容的顺序与您需要提取它们的顺序相同。您不需要颠倒顺序！
     @Override
-    public Object getScreenOpeningData(ServerPlayerEntity serverPlayerEntity) {
-        return null;
+    public BlockPos getScreenOpeningData(ServerPlayerEntity serverPlayerEntity) {
+        return pos;
     }
 
     @Override
@@ -313,6 +313,96 @@ public class ConceptSimulatorBlockEntity
     @Override
     public boolean shouldCloseCurrentScreen() {
         return ExtendedScreenHandlerFactory.super.shouldCloseCurrentScreen();
+    }
+
+    @Override
+    public DefaultedList<ItemStack> getItems() {
+        return inventory;
+    }
+
+    @Override
+    public int size() {
+        return ImplementedInventory.super.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return ImplementedInventory.super.isEmpty();
+    }
+
+    @Override
+    public ItemStack getStack(int slot) {
+        return ImplementedInventory.super.getStack(slot);
+    }
+
+    @Override
+    public ItemStack removeStack(int slot, int count) {
+        return ImplementedInventory.super.removeStack(slot, count);
+    }
+
+    @Override
+    public ItemStack removeStack(int slot) {
+        return ImplementedInventory.super.removeStack(slot);
+    }
+
+    @Override
+    public void setStack(int slot, ItemStack stack) {
+        ImplementedInventory.super.setStack(slot, stack);
+    }
+
+    @Override
+    public int getMaxCountPerStack() {
+        return ImplementedInventory.super.getMaxCountPerStack();
+    }
+
+    @Override
+    public int getMaxCount(ItemStack stack) {
+        return ImplementedInventory.super.getMaxCount(stack);
+    }
+
+    @Override
+    public void clear() {
+        ImplementedInventory.super.clear();
+    }
+
+    @Override
+    public boolean canPlayerUse(PlayerEntity player) {
+        return ImplementedInventory.super.canPlayerUse(player);
+    }
+
+    @Override
+    public void onOpen(PlayerEntity player) {
+        ImplementedInventory.super.onOpen(player);
+    }
+
+    @Override
+    public void onClose(PlayerEntity player) {
+        ImplementedInventory.super.onClose(player);
+    }
+
+    @Override
+    public boolean isValid(int slot, ItemStack stack) {
+        return ImplementedInventory.super.isValid(slot, stack);
+    }
+
+    @Override
+    public boolean canTransferTo(Inventory hopperInventory, int slot, ItemStack stack) {
+        return ImplementedInventory.super.canTransferTo(hopperInventory, slot, stack);
+    }
+
+    @Override
+    public int count(Item item) {
+        return ImplementedInventory.super.count(item);
+    }
+
+    @Override
+    public boolean containsAny(Set<Item> items) {
+        return ImplementedInventory.super.containsAny(items);
+    }
+
+    @Override
+    public boolean containsAny(Predicate<ItemStack> predicate) {
+        return ImplementedInventory.super.containsAny(predicate);
     }
 }
 

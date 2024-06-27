@@ -12,7 +12,7 @@ public class ConceptFantasyJourneyDataGenerator implements DataGeneratorEntrypoi
 //        pack.addProvider(ModBlockTagProvider::new);
 //        pack.addProvider(ModItemTagProvider::new);
 //        pack.addProvider(ModLootTableProvider::new);
-        pack.addProvider(CfjModelProvider::new);
+//        pack.addProvider(CfjModelProvider::new);
 //        pack.addProvider(ModRecipeProvider::new);
 //        pack.addProvider(ModPoiTagProvider::new);
     }

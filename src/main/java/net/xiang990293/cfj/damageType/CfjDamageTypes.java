@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 import net.xiang990293.cfj.ConceptFantasyJourney;
 
 public class CfjDamageTypes {
-    public static final RegistryKey<DamageType> EMOTIONAL_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(ConceptFantasyJourney.MOD_ID, "emotional_damage_type"));
+    public static final RegistryKey<DamageType> EMOTIONAL_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Identifier.of(ConceptFantasyJourney.MOD_ID, "emotional_damage_type"));
 
     public static DamageSource of(World world, RegistryKey<DamageType> key){
         return new DamageSource(world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).entryOf(key));

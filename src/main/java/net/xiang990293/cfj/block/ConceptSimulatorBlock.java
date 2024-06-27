@@ -6,8 +6,10 @@ package net.xiang990293.cfj.block;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.*;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.state.StateManager;
@@ -69,7 +71,7 @@ public class ConceptSimulatorBlock
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof ConceptSimulatorBlockEntity) {
-                ItemScatterer.spawn(world, pos, (ConceptSimulatorBlockEntity)blockEntity);
+                ItemScatterer.spawn(world, pos, (Inventory) blockEntity);
             }
             super.onStateReplaced(state, world, pos, newState, moved);
         }

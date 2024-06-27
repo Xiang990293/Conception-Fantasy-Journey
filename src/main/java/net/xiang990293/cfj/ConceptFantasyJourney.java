@@ -7,6 +7,8 @@ import net.minecraft.item.*;
 import net.minecraft.text.Text;
 import net.xiang990293.cfj.block.CfjBlocks;
 import net.xiang990293.cfj.block.entity.CfjBlockEntities;
+import net.xiang990293.cfj.event.PureLoveSwordAttackEntityItemDrop;
+import net.xiang990293.cfj.event.WingItemGeneralEvents;
 import net.xiang990293.cfj.item.CfjItemGroup;
 import net.xiang990293.cfj.item.CfjItems;
 import net.xiang990293.cfj.network.CfjNetworkingContants;
@@ -36,7 +38,7 @@ public class ConceptFantasyJourney implements ModInitializer {
 
 		LOGGER.info("Hello Fabric world!");
 		CfjItemGroup.registerItemGroups();
-//		CfjItems.registerCfjItems(); // problem
+		CfjItems.registerCfjItems(); // problem
 
 		CfjBlocks.registerCfjBlocks();
 		CfjBlockEntities.registerCfjBlockEntities();
@@ -44,6 +46,9 @@ public class ConceptFantasyJourney implements ModInitializer {
 
 		CfjNetworkingContants.registerC2SPackets();
 		CfjNetworkingContants.registerS2CPackets();
+
+        PureLoveSwordAttackEntityItemDrop.registerEvents();
+		WingItemGeneralEvents.registerEvents();
 	}
 
 

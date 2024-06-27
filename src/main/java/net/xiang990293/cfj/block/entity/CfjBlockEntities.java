@@ -13,11 +13,11 @@ import net.xiang990293.cfj.block.CfjBlocks;
 import java.util.Set;
 
 public class CfjBlockEntities {
-    public static final BlockEntityType<ConceptSimulatorBlockEntity> CONCEPT_SIMULATOR_BLOCK_ENTITY = registerBlockEntities("concept_simulator_block_entity",  FabricBlockEntityTypeBuilder.create(ConceptSimulatorBlockEntity::new, CfjBlocks.ConceptSimulatorBlock).build());
+    public static final BlockEntityType<ConceptSimulatorBlockEntity> CONCEPT_SIMULATOR_BLOCK_ENTITY = registerBlockEntities("concept_simulator",  FabricBlockEntityTypeBuilder.create(ConceptSimulatorBlockEntity::new, CfjBlocks.ConceptSimulatorBlock).build());
 
 
     private static BlockEntityType<ConceptSimulatorBlockEntity> registerBlockEntities(String name, BlockEntityType blockEntityType) {
-        return Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(ConceptFantasyJourney.MOD_ID, name), blockEntityType);
+        return Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(ConceptFantasyJourney.MOD_ID, name), blockEntityType);
     }
 
     public static void registerCfjBlockEntities() {

@@ -1,5 +1,7 @@
 package net.xiang990293.cfj.event.keybind;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,26 +34,24 @@ public class KeyInputHandler {
          * 2. 在鞘翅飛行狀態下，使玩家急速飛升
          * 3. 限制空白鍵的行為
          * */
-//        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-//            while(client.options.jumpKey.wasPressed()){
-//                PlayerEntity player = client.player;
-//                NbtCompound nbt = new NbtCompound();
-//                player.writeNbt(nbt);
-//                NbtCompound flyingTags = nbt.getCompound("flyingTags");
-//                boolean HasWingOn = player.getEquippedStack(EquipmentSlot.CHEST).getItem() instanceof WingItem;
-//                boolean IsElytraFlying = flyingTags.getBoolean("elytraFly");
-//                boolean CreativeFlyed = flyingTags.getBoolean("creativeFlyed");
-//                if (HasWingOn && IsElytraFlying && (player.getPitch()<=80.0f || player.getPitch()>=-80.0f)) {
-//                    ClientPlayNetworking.send(new WingFlyHighPayload(0.05f));
-//                }
-//
-//                if(HasWingOn && IsElytraFlying && (player.getPitch()>80.0f || player.getPitch()<-80.0f)){
-//                    ClientPlayNetworking.send(new WingFlyHighPayload(1.0f));
-//                }
-//
-//            }
-////            if (wingFlyKeyBinding.isPressed()) {
-////            }
-//        });
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            while(client.options.jumpKey.wasPressed()){
+                PlayerEntity player = client.player;
+                NbtCompound nbt = new NbtCompound();
+                player.writeNbt(nbt);
+                NbtCompound flyingTags = nbt.getCompound("flyingTags");
+                boolean HasWingOn = player.getEquippedStack(EquipmentSlot.CHEST).getItem() instanceof WingItem;
+                boolean IsElytraFlying = flyingTags.getBoolean("elytraFly");
+                boolean CreativeFlyed = flyingTags.getBoolean("creativeFlyed");
+                if (HasWingOn && IsElytraFlying && (player.getPitch()<=80.0f || player.getPitch()>=-80.0f)) {
+                    ClientPlayNetworking.send(new WingFlyHighPayload(0.05f));
+                }
+
+                if(HasWingOn && IsElytraFlying && (player.getPitch()>80.0f || player.getPitch()<-80.0f)){
+                    ClientPlayNetworking.send(new WingFlyHighPayload(1.0f));
+                }
+
+            }
+        });
     }
 }
