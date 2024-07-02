@@ -46,9 +46,6 @@ public class ConceptFantasyJourney implements ModInitializer {
 
 		CfjNetworkingContants.registerC2SPackets();
 		CfjNetworkingContants.registerS2CPackets();
-
-        PureLoveSwordAttackEntityItemDrop.registerEvents();
-		WingItemGeneralEvents.registerEvents();
 	}
 
 

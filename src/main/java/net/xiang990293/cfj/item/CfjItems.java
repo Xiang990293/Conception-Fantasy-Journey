@@ -11,6 +11,7 @@ import net.xiang990293.cfj.ConceptFantasyJourney;
 import net.xiang990293.cfj.event.PureLoveSwordAttackEntityItemDrop;
 import net.xiang990293.cfj.event.WingItemGeneralEvents;
 import net.xiang990293.cfj.item.tool.PureLoveTools;
+import net.xiang990293.cfj.item.tool.UnbreakableTools;
 import net.xiang990293.cfj.item.wing.WingItem;
 
 public class CfjItems {
@@ -18,7 +19,7 @@ public class CfjItems {
 
     public static final Item ValentineChocolate = registerItem("valentine_chocolate", new Item(new Item.Settings().food(CfjFoodComponents.Valentine_Chocolate)));
 
-//    public static final Item UnbreakableSword = registerItem("unbreakable_sword", UnbreakableTools.UnbreakableSword);
+    public static final Item UnbreakableSword = registerItem("unbreakable_sword", UnbreakableTools.UnbreakableSword);
 //    public static final Item UnbreakableShovel = registerItem("unbreakable_shovel", UnbreakableTools.UnbreakableShovel);
 //    public static final Item UnbreakableAxe = registerItem("unbreakable_axe", UnbreakableTools.UnbreakableAxe);
 //    public static final Item UnbreakablePickaxe = registerItem("unbreakable_pickaxe", UnbreakableTools.UnbreakablePickaxe);

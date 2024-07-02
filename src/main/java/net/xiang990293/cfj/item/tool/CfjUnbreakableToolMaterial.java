@@ -11,7 +11,7 @@ public class CfjUnbreakableToolMaterial implements ToolMaterial {
 
     @Override
     public int getDurability(){
-        return -1;
+        return 0;
     }
 
     @Override
@@ -21,7 +21,7 @@ public class CfjUnbreakableToolMaterial implements ToolMaterial {
 
     @Override
     public float getAttackDamage() {
-        return 0.0f;
+        return 2147483647.0f;
     }
 
     @Override
@@ -29,10 +29,10 @@ public class CfjUnbreakableToolMaterial implements ToolMaterial {
         return null;
     }
 
-    //    @Override
-    public int getMiningLevel() {
-        return 10;
-    }
+//    @Override
+//    public int getMiningLevel() {
+//        return 10;
+//    }
 
     @Override
     public int getEnchantability() {

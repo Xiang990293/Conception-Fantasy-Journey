@@ -113,7 +113,7 @@ public class WingItemGeneralEvents {
                 }
 
                 if (IsCreativeFlying && !CreativeFlyed) {
-                    playerFlyStateChange(player, nbt, IsCreativeFlying, true, false, true);
+                    playerFlyStateChange(player, nbt, true, true, false, true);
                     return;
                 }
 

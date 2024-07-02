@@ -13,7 +13,7 @@ public class PureLoveSwordAttackEntityItemDrop {
         AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
             if (!entity.isInvulnerable() && !player.isSpectator() &&
                     player.getMainHandStack().isOf(CfjItems.PureLoveSword) && !world.isClient()) {
-                ConceptFantasyJourney.LOGGER.info(""+world);
+//                ConceptFantasyJourney.LOGGER.info(""+player+" "+world+" "+hand+" "+entity+" "+hitResult);
                 entity.damage(CfjDamageTypes.of(world, CfjDamageTypes.EMOTIONAL_DAMAGE), 1.0F);
 
                 ItemEntity entityToSpawn = new ItemEntity(world, entity.getX(), entity.getY(), entity.getZ(), new ItemStack(CfjItems.ValentineChocolate));

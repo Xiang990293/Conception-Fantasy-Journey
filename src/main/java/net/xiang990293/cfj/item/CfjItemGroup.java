@@ -19,7 +19,7 @@ public class CfjItemGroup {
             Identifier.of(ConceptFantasyJourney.MOD_ID, "food_and_drinks"),
             FabricItemGroup.builder()
                     .displayName(Text.translatable("itemgroup.food_and_drinks.title"))
-//                    .icon(() -> new ItemStack(CfjItems.ValentineChocolate))
+                    .icon(() -> new ItemStack(CfjItems.ValentineChocolate))
                     .entries((displayContext, entries) -> {
                         entries.add(CfjItems.ValentineChocolate);
                     })
