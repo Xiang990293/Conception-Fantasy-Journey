@@ -9,10 +9,10 @@ public class ConceptFantasyJourneyDataGenerator implements DataGeneratorEntrypoi
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
-//        pack.addProvider(ModBlockTagProvider::new);
+//        pack.addProvider(CfjBlockTagProvider::new);
 //        pack.addProvider(ModItemTagProvider::new);
 //        pack.addProvider(ModLootTableProvider::new);
-//        pack.addProvider(CfjModelProvider::new);
+        pack.addProvider(CfjModelProvider::new);
 //        pack.addProvider(ModRecipeProvider::new);
 //        pack.addProvider(ModPoiTagProvider::new);
     }

@@ -1,11 +1,7 @@
 package net.xiang990293.cfj.item;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -28,11 +24,11 @@ public class CfjItemGroup {
             Identifier.of(ConceptFantasyJourney.MOD_ID, "blocks_and_tools"),
             FabricItemGroup.builder()
                     .displayName(Text.translatable("itemgroup.blocks_and_tools.title"))
-                    .icon(() -> new ItemStack(CfjBlocks.ConceptSimulatorBlock))
+                    .icon(() -> new ItemStack(CfjBlocks.CONCEPT_SIMULATOR))
                     .entries((displayContext, entries) -> {
-                        entries.add(CfjBlocks.ConceptSimulatorBlock);
-                        entries.add(CfjBlocks.ImaginationLogBlock);
-//                        entries.add(CfjItems.UnbreakableSword);
+                        entries.add(CfjBlocks.CONCEPT_SIMULATOR);
+                        entries.add(CfjBlocks.IMAGINATION_LOG);
+                        entries.add(CfjItems.UnbreakableSword);
 //                        entries.add(CfjItems.UnbreakableShovel);
 //                        entries.add(CfjItems.UnbreakableHoe);
 //                        entries.add(CfjItems.UnbreakablePickaxe);

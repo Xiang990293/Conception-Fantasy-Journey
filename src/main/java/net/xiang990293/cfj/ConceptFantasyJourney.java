@@ -9,12 +9,15 @@ import net.xiang990293.cfj.block.CfjBlocks;
 import net.xiang990293.cfj.block.entity.CfjBlockEntities;
 import net.xiang990293.cfj.event.PureLoveSwordAttackEntityItemDrop;
 import net.xiang990293.cfj.event.WingItemGeneralEvents;
+import net.xiang990293.cfj.item.CfjArmorMaterials;
 import net.xiang990293.cfj.item.CfjItemGroup;
 import net.xiang990293.cfj.item.CfjItems;
 import net.xiang990293.cfj.network.CfjNetworkingContants;
 import net.xiang990293.cfj.screen.CfjScreenHandlers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static net.xiang990293.cfj.item.CfjArmorMaterials.registerCfjArmorMaterials;
 
 public class ConceptFantasyJourney implements ModInitializer {
 	public static final String MOD_ID = "concept_fantasy_journey";
@@ -38,7 +41,8 @@ public class ConceptFantasyJourney implements ModInitializer {
 
 		LOGGER.info("Hello Fabric world!");
 		CfjItemGroup.registerItemGroups();
-		CfjItems.registerCfjItems(); // problem
+		CfjArmorMaterials.registerCfjArmorMaterials();
+		CfjItems.registerCfjItems(); // no problem now maybe
 
 		CfjBlocks.registerCfjBlocks();
 		CfjBlockEntities.registerCfjBlockEntities();

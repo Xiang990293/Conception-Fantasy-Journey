@@ -1,77 +1,44 @@
 package net.xiang990293.cfj.item;
 
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ArmorMaterial;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.item.*;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 import net.xiang990293.cfj.ConceptFantasyJourney;
+import net.xiang990293.cfj.event.PureLoveSwordAttackEntityItemDrop;
+import net.xiang990293.cfj.event.WingItemGeneralEvents;
+import net.xiang990293.cfj.item.armor.UnbreakableArmorMaterial;
 
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
-public enum CfjArmorMaterials {
-    UNBREAKABLE("unbreakable", 0, new int[] {2147483647,2147483647,2147483647,2147483647}, -1, SoundEvents.ITEM_AXE_SCRAPE, 2f,10, null)
-    ;
-    private final String name;
-    private final int DurabilityMultiplier;
-    private final int[] protectionAmounts;
-    private final int enchantability;
-    private final SoundEvent equipSound;
-    private final float toughness;
-    private final float knockbackResistance;
-    private final Supplier<Ingredient> repairIngredient;
+public class CfjArmorMaterials {
 
-    private static final int[] BASE_DURABILITY = {11,16,15,13};
+    public static final RegistryEntry<ArmorMaterial> UNBREAKABLE = registerArmorMaterial("unbreakable",(Map<ArmorItem.Type,Integer>) Util.make(new EnumMap(ArmorItem.Type.class), (map)-> {
+        map.put(ArmorItem.Type.HELMET,2147483647);
+        map.put(ArmorItem.Type.CHESTPLATE,2147483647);
+        map.put(ArmorItem.Type.LEGGINGS,2147483647);
+        map.put(ArmorItem.Type.BOOTS,2147483647);
+    }), -1, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, ()-> Ingredient.ofItems(CfjItems.UnbreakableHelmet), 2f,10);
 
-    CfjArmorMaterials(String name, int durabilityMultiplier, int[] protectionAmounts, int enchantability, SoundEvent equipSound,
-                      float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient) {
-        this.name = name;
-        this.DurabilityMultiplier = durabilityMultiplier;
-        this.protectionAmounts = protectionAmounts;
-        this.enchantability = enchantability;
-        this.equipSound = equipSound;
-        this.toughness = toughness;
-        this.knockbackResistance = knockbackResistance;
-        this.repairIngredient = repairIngredient;
+    public static void registerCfjArmorMaterials() {
+        ConceptFantasyJourney.LOGGER.info("Registering Mod ArmorMaterials for " + ConceptFantasyJourney.MOD_ID);
     }
 
-//    @Override
-    public int getDurability(ArmorItem.Type type) {
-        return BASE_DURABILITY[type.ordinal()] * this.DurabilityMultiplier;
+    public static RegistryEntry<ArmorMaterial> registerArmorMaterial(String name, Map<ArmorItem.Type, Integer> map, int enchantability, RegistryEntry<SoundEvent> equipSound, Supplier<Ingredient> repairIngredient, List<ArmorMaterial.Layer> layers, float toughness, float knockbackResistance) {
+        return Registry.registerReference(Registries.ARMOR_MATERIAL, Identifier.of(name),new ArmorMaterial(map, enchantability, equipSound, repairIngredient, layers, toughness,knockbackResistance));
     }
 
-//    @Override
-    public int getProtection(ArmorItem.Type type) {
-        return protectionAmounts[type.ordinal()];
-    }
-
-//    @Override
-    public int getEnchantability() {
-        return this.enchantability;
-    }
-
-//    @Override
-    public SoundEvent getEquipSound() {
-        return this.equipSound;
-    }
-
-//    @Override
-    public Ingredient getRepairIngredient() {
-        return this.repairIngredient.get();
-    }
-
-//    @Override
-    public String getName() {
-        return ConceptFantasyJourney.MOD_ID + ":" + this.name;
-    }
-
-//    @Override
-    public float getToughness() {
-        return this.toughness;
-    }
-
-//    @Override
-    public float getKnockbackResistance() {
-        return this.knockbackResistance;
+    public static RegistryEntry<ArmorMaterial> registerArmorMaterial(String name, Map<ArmorItem.Type, Integer> map, int enchantability, RegistryEntry<SoundEvent> equipSound, Supplier<Ingredient> repairIngredient, float toughness, float knockbackResistance) {
+        List<ArmorMaterial.Layer> layers = List.of(new ArmorMaterial.Layer(Identifier.of(name)));
+        return registerArmorMaterial(name, map, enchantability, equipSound, repairIngredient, layers, toughness,knockbackResistance);
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
+import net.minecraft.world.storage.RegionBasedStorage;
 import net.xiang990293.cfj.ConceptFantasyJourney;
 import net.xiang990293.cfj.event.PureLoveSwordAttackEntityItemDrop;
 import net.xiang990293.cfj.event.WingItemGeneralEvents;
@@ -32,7 +33,7 @@ public class CfjItems {
             .rarity(Rarity.RARE)
     ));
 
-//    //public static final Item UnbreakableHelmet = registerItem("unbreakable_helmet", new ArmorItem(CfjArmorMaterials.UNBREAKABLE, ArmorItem.Type.HELMET, new Item.Settings()));
+    public static final Item UnbreakableHelmet = registerItem("unbreakable_helmet", new ArmorItem(CfjArmorMaterials.UNBREAKABLE, ArmorItem.Type.HELMET, new Item.Settings()));
 
 
 
