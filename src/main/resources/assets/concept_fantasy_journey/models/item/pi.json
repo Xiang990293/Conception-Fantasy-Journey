@@ -1,0 +1,7 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "concept_fantasy_journey:item/pi",
+		"particle": "concept_fantasy_journey:item/pi"
+	}
+}

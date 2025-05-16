@@ -3,6 +3,7 @@ package net.xiang990293.cfj.item;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.client.particle.TotemParticle;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -19,6 +20,7 @@ public class CfjItems {
     //public static final Item ValentineChocolate = registerItem("valentine_chocolate", new Item(new FabricItemSettings()));
 
     public static final Item ValentineChocolate = registerItem("valentine_chocolate", new Item(new FabricItemSettings().food(CfjFoodComponents.Valentine_Chocolate)));
+    public static final Item PI = registerItem("pi", new Item(new FabricItemSettings().food(CfjFoodComponents.PI)));
 
     public static final Item UnbreakableSword = registerItem("unbreakable_sword", UnbreakableTools.UnbreakableSword);
     public static final Item UnbreakableShovel = registerItem("unbreakable_shovel", UnbreakableTools.UnbreakableShovel);
@@ -35,10 +37,14 @@ public class CfjItems {
 
     public static final Item UnbreakableHelmet = registerItem("unbreakable_helmet", new ArmorItem(CfjArmorMaterials.UNBREAKABLE, ArmorItem.Type.HELMET, new FabricItemSettings()));
 
+    public static final Item TotemOfDying = registerItem("totem_of_dying", new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).maxCount(1)));
+    public static final Item WaterBucketCake = registerItem("water_bucket_cake", new Item(new FabricItemSettings().food(CfjFoodComponents.Water_Bucket_Cake).maxCount(1)));
+
 
 
     private static void addItemsToIngredientTabItemGroup(FabricItemGroupEntries entries) {
         entries.add(ValentineChocolate);
+        entries.add(PI);
     }
 
     public static Item registerItem(String name, Item item) {

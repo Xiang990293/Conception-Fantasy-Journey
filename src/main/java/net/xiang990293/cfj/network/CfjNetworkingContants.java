@@ -23,7 +23,7 @@ public class CfjNetworkingContants {
     public static final Identifier Wing_Fly_Sync_S2C_ID = new Identifier(ConceptFantasyJourney.MOD_ID, "wing_fly_sync_s2c");
     public static final Identifier Custom_Wing_Fly_Sync_ID = new Identifier(ConceptFantasyJourney.MOD_ID, "custom_wing_fly_sync");
     public static final Identifier Wing_Fly_High_ID = new Identifier(ConceptFantasyJourney.MOD_ID, "wing_fly_high");
-
+    
     public static void registerC2SPackets() {
         ServerPlayNetworking.registerGlobalReceiver(CfjNetworkingContants.Concept_Simulator_Sync_ID, (server, player, handler, buf, responseSender) -> {
             Boolean isCalculating = buf.readBoolean();

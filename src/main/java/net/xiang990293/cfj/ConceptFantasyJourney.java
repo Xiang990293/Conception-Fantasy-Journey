@@ -7,6 +7,7 @@ import net.minecraft.item.*;
 import net.minecraft.text.Text;
 import net.xiang990293.cfj.block.CfjBlocks;
 import net.xiang990293.cfj.block.entity.CfjBlockEntities;
+import net.xiang990293.cfj.event.CheckHandsEvents;
 import net.xiang990293.cfj.item.CfjItemGroup;
 import net.xiang990293.cfj.item.CfjItems;
 import net.xiang990293.cfj.network.CfjNetworkingContants;
@@ -42,6 +43,8 @@ public class ConceptFantasyJourney implements ModInitializer {
 
 		CfjNetworkingContants.registerC2SPackets();
 		CfjNetworkingContants.registerS2CPackets();
+
+		CheckHandsEvents.registerEvents();
 	}
 
 
